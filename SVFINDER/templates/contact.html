@@ -1,0 +1,306 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>SvFinder | Contact Us</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <style>
+        :root {
+      --primary-color: #002147;
+      --accent-color: #ffc107;
+      --bg-color: #f8f9fa;
+      --text-color: #333;
+    }
+      /* Reset */
+       * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+     body {
+      background: linear-gradient(to right, #f0f4ff, #e5ecff);
+      color: #1e1e1e;
+      overflow-x: hidden;
+    }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+
+      /* Navbar */
+       nav {
+      background-color: #001c54;
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 40px;
+      height: 60px;
+      box-shadow: 0 3px 5px rgba(0,0,0,0.1);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      height: 75px;
+      
+    }
+      .logo-section {
+        display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+      .logo-img {
+        height: 38px;
+      }
+
+      .logo {
+        font-size: 1.2rem;
+      font-weight: 600;
+      color: #FFD700;
+      }
+
+      .nav-links {
+        display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+      .nav-links a {
+        color: #fff;
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 14px;
+      transition: color 0.3s ease;
+    }
+
+      .nav-links a:hover,
+      .nav-links a:focus {
+        color: #FFD700;
+      }
+
+      /* Hero */
+      .hero {
+        background-color: #002147;
+        color: white;
+        padding: 80px 20px 60px;
+        text-align: center;
+        font-weight: 600;
+        user-select: none;
+      }
+
+      .hero h1 {
+        font-size: 2.75rem;
+        margin: 0;
+        line-height: 1.1;
+      }
+
+      /* Container */
+      .container {
+        max-width: 960px;
+        margin: 40px auto 80px;
+        background-color: #fff;
+        padding: 50px 40px;
+        border-radius: 12px;
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+      }
+
+      .container h2 {
+        font-size: 2rem;
+        margin-bottom: 30px;
+        color: #002147;
+        border-bottom: 3px solid #ffd700;
+        padding-bottom: 12px;
+        user-select: none;
+      }
+
+      /* Contact info */
+      .contact-info {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 20px;
+        font-size: 1.1rem;
+        color: #444;
+        margin-bottom: 45px;
+      }
+
+      .contact-item {
+        display: flex;
+        align-items: center;
+        gap: 18px;
+      }
+
+      .contact-item i {
+        color: #8e44ad;
+        font-size: 24px;
+        min-width: 36px;
+        text-align: center;
+      }
+
+      /* FYP Committee list */
+      .fyp-committee-list {
+        list-style: none;
+        padding-left: 0;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: 18px;
+        color: #333;
+      }
+
+      .fyp-committee-list li {
+        background-color: #f8f8f8;
+        padding: 16px 20px;
+        border-left: 6px solid #8e44ad;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-weight: 600;
+        user-select: none;
+      }
+
+      .fyp-committee-list li i {
+        font-size: 20px;
+        color: #8e44ad;
+      }
+
+      /* Button */
+      .button-group {
+        text-align: center;
+        margin-top: 50px;
+      }
+
+      .button-link {
+        display: inline-block;
+        background-color: #8e44ad;
+        color: white;
+        padding: 14px 40px;
+        border-radius: 30px;
+        font-weight: 700;
+        font-size: 1.1rem;
+        box-shadow: 0 4px 12px rgba(142, 68, 173, 0.4);
+        transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        user-select: none;
+      }
+
+      .button-link:hover,
+      .button-link:focus {
+        background-color: #732d91;
+        box-shadow: 0 6px 18px rgba(115, 45, 145, 0.6);
+        outline: none;
+      }
+
+      /* Responsive */
+      @media (max-width: 768px) {
+        nav {
+          flex-direction: column;
+          padding: 15px 20px;
+          gap: 12px;
+        }
+
+        .nav-links {
+          flex-wrap: wrap;
+          justify-content: center;
+          gap: 15px;
+        }
+
+        .hero h1 {
+          font-size: 2.2rem;
+        }
+
+        .container {
+          padding: 30px 20px 40px;
+          margin: 30px 15px 60px;
+        }
+
+        .contact-info {
+          font-size: 1rem;
+          gap: 16px;
+        }
+
+        .fyp-committee-list {
+          grid-template-columns: 1fr;
+          gap: 15px;
+        }
+      }
+    </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <nav>
+    <div class="logo-section">
+      <img src="{% static 'logoukm.png' %}" alt="UKM Logo" class="logo-img" />
+      <div class="logo" aria-label="SvFinder logo">SvFinder</div>
+    </div>
+    <div class="nav-links" role="navigation" aria-label="Primary navigation">
+      <a href="#" aria-current="page"> Home</a>
+      <a href="{% url 'about' %}"> About</a>
+      <a href="{% url 'contact' %}"> Contact</a>
+     
+    </div>
+  </nav>
+
+
+  <!-- Main Content -->
+  <main class="container" role="main" tabindex="-1">
+    <h2>General Contact Information</h2>
+    <section class="contact-info" aria-label="General contact information">
+      <div class="contact-item">
+        <i class="fas fa-envelope" aria-hidden="true"></i>
+        <a href="mailto:svfinder.helpdesk@gmail.com" target="_blank" rel="noopener noreferrer">svfinder.helpdesk@gmail.com</a>
+      </div>
+      <div class="contact-item">
+        <i class="fas fa-phone" aria-hidden="true"></i>
+        <a href="tel:+60123456789">+60 12-345 6789</a>
+      </div>
+      <div class="contact-item">
+        <i class="fas fa-map-marker-alt" aria-hidden="true"></i>
+        Fakulti Teknologi & Sains Maklumat, UKM, Bangi, Selangor
+      </div>
+      <div class="contact-item">
+        <i class="fas fa-clock" aria-hidden="true"></i>
+        Monday - Friday: 9AM - 5PM
+      </div>
+    </section>
+
+    <h2>FYP Committee Members</h2>
+    <ul class="fyp-committee-list" aria-label="FYP committee members list">
+      <li><i class="fas fa-user-tie" aria-hidden="true"></i> Dr. Hazura Mohamed (Chairperson)</li>
+      <li><i class="fas fa-user-tie" aria-hidden="true"></i> Dr. Siti Fadzilah binti Mat Noor</li>
+      <li><i class="fas fa-user-tie" aria-hidden="true"></i> Dr. Fadhilah binti Rosdi</li>
+      <li><i class="fas fa-user-tie" aria-hidden="true"></i> Dr. Ibrahim bin Mohamed</li>
+      <li><i class="fas fa-user-tie" aria-hidden="true"></i> Dr. Khairul Azmi bin Abu Bakar</li>
+      <li><i class="fas fa-user-tie" aria-hidden="true"></i> Dr. Nazatul Aini binti Abdul Majid</li>
+      <li><i class="fas fa-user-tie" aria-hidden="true"></i> Dr. Hadi Affendy Dahlan</li>
+      <li><i class="fas fa-user-tie" aria-hidden="true"></i> Dr. Nor Samsiah Sani</li>
+      <li><i class="fas fa-user-tie" aria-hidden="true"></i> Dr. Suhaila Zainudin</li>
+      <li><i class="fas fa-user-tie" aria-hidden="true"></i> Dr. Kauthar Mohd Daud</li>
+      <li><i class="fas fa-user-tie" aria-hidden="true"></i> Dr. Nur Fazidah binti Elias</li>
+      <li><i class="fas fa-user-tie" aria-hidden="true"></i> Dr. Ruzzakiah Jenal</li>
+      <li><i class="fas fa-user-tie" aria-hidden="true"></i> Dr. Tan Siok Yee</li>
+      <li><i class="fas fa-user-tie" aria-hidden="true"></i> Dr. Wan Fariza binti Paizi@Fauzi</li>
+      <li><i class="fas fa-user-tie" aria-hidden="true"></i> Dr. Zaihosnita Hood</li>
+      <li><i class="fas fa-user" aria-hidden="true"></i> Ms. Mastura Sahak</li>
+      <li><i class="fas fa-user" aria-hidden="true"></i> Ms. Azyyati Zainal Abidin</li>
+      <li><i class="fas fa-user" aria-hidden="true"></i> Ms. Nor Ana Mansor</li>
+      <li><i class="fas fa-user" aria-hidden="true"></i> Ms. Noorsham Mahamad</li>
+    </ul>
+
+    <div class="button-group">
+      <a href="{% url 'index' %}" class="button-link" aria-label="Back to home page">← Back to Home</a>
+    </div>
+  </main>
+</body>
+</html>

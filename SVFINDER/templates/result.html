@@ -1,0 +1,80 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Application Result</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f6f6f6;
+            padding: 40px;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        label {
+            display: block;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+        input, select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        textarea {
+            height: 120px;
+        }
+        .submit-btn {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #2196F3;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2>Submit Application Result</h2>
+    <form method="POST">
+        {% csrf_token %}
+
+        <!-- ID Status: Automatically generated -->
+        <label>ID Status:</label>
+        <input type="text" name="id_status" value="S {{ permohonan.id_pelajar_id }}" readonly>
+
+        <!-- ID Permohonan: Automatically filled -->
+        <label>ID Permohonan:</label>
+        <input type="text" name="id_permohonan" value="{{ permohonan.id_permohonan }}" readonly>
+
+        <!-- Status Dropdown -->
+        <label>Status:</label>
+        <select name="status" required>
+            <option value="">-- Choose Status --</option>
+            <option value="Accepted">Accepted</option>
+            <option value="Rejected">Rejected</option>
+        </select>
+
+        <!-- Ulasan -->
+        <label>Ulasan:</label>
+        <textarea name="ulasan" maxlength="3000" required></textarea>
+
+        <!-- Tarikh Kemaskini (Auto filled on server side) -->
+        <input type="hidden" name="tarikh_kemaskini_status" value="{{ today|date:'Y-m-d' }}">
+
+        <button type="submit" class="submit-btn">Submit</button>
+    </form>
+</div>
+</body>
+</html>

@@ -1,0 +1,189 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Application List | SvFinder</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&family=Georgia&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --primary: #002147;
+      --accent: #ffc107;
+      --bg: #f4f6fa;
+      --text: #1e1e1e;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Roboto', sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+    }
+
+    .container {
+      width: 90%;
+      max-width: 1100px;
+      margin: 40px auto;
+      padding: 30px;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+    }
+
+    h1 {
+      font-family: 'Georgia', serif;
+      font-size: 32px;
+      text-align: center;
+      color: var(--primary);
+      margin-bottom: 30px;
+    }
+
+    .filters {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 25px;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .filters button {
+      padding: 10px 22px;
+      background-color: var(--accent);
+      color: #1e1e1e;
+      border: none;
+      border-radius: 5px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .filters button.active,
+    .filters button:hover {
+      background-color: #e6ac00;
+      color: #fff;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+
+    thead {
+      background-color: var(--primary);
+    }
+
+    th {
+      color: var(--accent);
+      text-align: left;
+      font-weight: 600;
+      font-size: 15px;
+      padding: 14px 16px;
+    }
+
+    td {
+      padding: 14px 16px;
+      border-bottom: 1px solid #ddd;
+      font-size: 14px;
+      background-color: #fff;
+    }
+
+    tr:nth-child(even) td {
+      background-color: #f9f9f9;
+    }
+
+    tr:hover td {
+      background-color: #eef1ff;
+      transition: background-color 0.2s ease;
+    }
+
+    .empty-message {
+      text-align: center;
+      color: #777;
+      font-size: 16px;
+      padding: 30px 0;
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        padding: 20px;
+      }
+
+      table {
+        font-size: 13px;
+      }
+
+      th, td {
+        padding: 10px;
+      }
+
+      h1 {
+        font-size: 24px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>Your Application List</h1>
+
+    <div class="filters">
+      <button id="all" class="active" onclick="filterStatus('')">ALL</button>
+      <button id="accepted" onclick="filterStatus('accepted')">ACCEPTED</button>
+      <button id="rejected" onclick="filterStatus('rejected')">REJECTED</button>
+      <button id="pending" onclick="filterStatus('pending')">PENDING</button>
+    </div>
+
+    {% if no_data %}
+      <p class="empty-message">No applications found related to your account. Please check back later.</p>
+    {% else %}
+      <table>
+        <thead>
+          <tr>
+            <th>Application ID</th>
+            <th>Student Name</th>
+            <th>Status</th>
+            <th>Last Update</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for item in permohonan_data %}
+            <tr class="status-row" data-status="{{ item.status|lower }}">
+              <td>{{ item.id_permohonan }}</td>
+              <td>{{ item.nama_pelajar }}</td>
+              <td>{{ item.status }}</td>
+              <td>{{ item.tarikh_kemaskini_status }}</td>
+            </tr>
+          {% empty %}
+            <tr><td colspan="4" class="empty-message">No applications found.</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% endif %}
+  </div>
+
+  <script>
+    function filterStatus(status) {
+      const rows = document.querySelectorAll('.status-row');
+      rows.forEach(row => {
+        row.style.display = status === '' || row.dataset.status === status ? '' : 'none';
+      });
+
+      document.querySelectorAll('.filters button').forEach(btn => btn.classList.remove('active'));
+      document.querySelector(`#${status || 'all'}`).classList.add('active');
+    }
+  </script>
+
+</body>
+</html>

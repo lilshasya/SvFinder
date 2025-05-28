@@ -1,0 +1,401 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Supervisor Request | SvFinder - UKM</title>
+
+  <!-- Fonts and Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      background: linear-gradient(to right, #f0f4ff, #e5ecff);
+      color: #1e1e1e;
+      overflow-x: hidden;
+    }
+
+    nav {
+      background-color: #001c54;
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 40px;
+      height: 75px;
+      box-shadow: 0 3px 5px rgba(0,0,0,0.1);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    .logo-section {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo-img {
+      height: 38px;
+    }
+
+    .logo-text {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: #FFD700;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    .nav-links a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 14px;
+      transition: color 0.3s ease;
+    }
+
+    .nav-links a:hover {
+      color: #FFD700;
+    }
+
+    :root {
+      --primary-color: #002147;
+      --accent-color: #ffc107;
+      --bg-color: #f8f9fa;
+      --text-color: #1e1e1e;
+      --form-bg: white;
+      --input-bg: #f0f4ff;
+      --input-border: #ccc;
+      --btn-bg: #002147;
+      --btn-hover: #004080;
+    }
+
+    .request-form {
+      background-color: var(--form-bg);
+      max-width: 1300px;
+      margin: 3rem auto 5rem;
+      padding: 3rem 4rem;
+      border-radius: 10px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+      display: flex;
+      gap: 4rem;
+      color: var(--text-color);
+    }
+
+    .info-section {
+      flex: 1;
+      border-right: 2px solid var(--accent-color);
+      padding-right: 2rem;
+    }
+
+    .info-section h2 {
+      font-family: 'Georgia', serif;
+      color: var(--primary-color);
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+
+    .info-section p {
+      font-size: 1rem;
+      margin-bottom: 1.5rem;
+      color: #444;
+      line-height: 1.4;
+    }
+
+    .info-section ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .info-section ul li {
+      font-weight: 600;
+      color: var(--accent-color);
+      font-size: 1rem;
+      margin-bottom: 0.6rem;
+      position: relative;
+      padding-left: 1.2rem;
+    }
+
+    .info-section ul li::before {
+      content: "•";
+      position: absolute;
+      left: 0;
+      color: var(--primary-color);
+      font-weight: 900;
+    }
+
+    form {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+    }
+
+    label {
+      font-weight: 600;
+      margin-bottom: 0.4rem;
+      color: var(--primary-color);
+      font-size: 1rem;
+    }
+
+    input[type="text"],
+    input[type="file"],
+    textarea {
+      padding: 0.8rem 1rem;
+      border: 1.5px solid var(--input-border);
+      border-radius: 8px;
+      font-size: 1rem;
+      background-color: var(--input-bg);
+      color: var(--text-color);
+      transition: border-color 0.3s ease;
+    }
+
+    input[readonly] {
+      background-color: #e1e7ff;
+      color: var(--primary-color);
+      cursor: not-allowed;
+    }
+
+    input[type="text"]:focus,
+    input[type="file"]:focus,
+    textarea:focus {
+      border-color: var(--primary-color);
+      outline: none;
+      box-shadow: 0 0 5px var(--primary-color);
+    }
+
+    /* Checkbox group - aligned checkbox and label horizontally */
+    .checkbox-group {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-size: 0.95rem;
+      color: var(--text-color);
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .checkbox-group input[type="checkbox"] {
+      transform: scale(1.2);
+      cursor: pointer;
+      accent-color: var(--primary-color);
+      margin: 0;
+      flex-shrink: 0;
+    }
+
+    /* Make label clickable */
+    .checkbox-group label {
+      font-weight: 600;
+      color: #333;
+      cursor: pointer;
+      margin: 0;
+      user-select: none;
+    }
+
+    .submit-button,
+    .back-button {
+      margin-top: 1rem;
+      padding: 0.75rem 2rem;
+      font-size: 1.1rem;
+      font-weight: 700;
+      border: none;
+      border-radius: 40px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      box-shadow: 0 5px 15px rgba(0,33,71,0.3);
+    }
+
+    .submit-button {
+      background-color: var(--btn-bg);
+      color: white;
+    }
+
+    .submit-button:hover {
+      background-color: var(--btn-hover);
+      box-shadow: 0 8px 20px rgba(0,33,71,0.5);
+    }
+
+    /* --- Improved Error Message Styling --- */
+    .error-messages {
+      margin-top: 20px;
+      background-color: #ffe6e6;
+      border: 1px solid #ffb3b3;
+      border-left: 5px solid #cc0000;
+      padding: 15px 20px;
+      border-radius: 8px;
+      font-size: 14px;
+      color: #cc0000;
+      list-style: none;
+      position: relative;
+      animation: fadeIn 0.3s ease-in-out;
+    }
+
+    .error-messages li {
+      margin-bottom: 8px;
+      padding-left: 22px;
+      position: relative;
+    }
+
+    .error-messages li::before {
+      content: "\f071";
+      font-family: "Font Awesome 6 Free";
+      font-weight: 900;
+      position: absolute;
+      left: 0;
+      top: 0;
+      color: #cc0000;
+    }
+
+    .back-button {
+      background-color: #bbb;
+      color: #222;
+      margin-right: 1rem;
+    }
+
+    .back-button:hover {
+      background-color: #999;
+    }
+
+    @media (max-width: 850px) {
+      .request-form {
+        flex-direction: column;
+        padding: 2rem 1.5rem;
+        max-width: 95%;
+      }
+
+      .info-section {
+        border-right: none;
+        border-bottom: 2px solid var(--accent-color);
+        padding-bottom: 1.5rem;
+      }
+
+      .nav-links {
+        gap: 1rem;
+      }
+
+      .logo-text {
+        font-size: 1.1rem;
+      }
+
+      nav {
+        padding: 10px 20px;
+      }
+    }
+  </style>
+
+  <script>
+    function validateForm() {
+      const check1 = document.getElementById("confirm1");
+      const check2 = document.getElementById("confirm2");
+
+      if (!check1.checked || !check2.checked) {
+        alert("Please tick both checkboxes to proceed.");
+        return false;
+      }
+      return true;
+    }
+
+    function goBack() {
+      window.history.back();
+    }
+  </script>
+</head>
+
+<body>
+
+<!-- Navigation -->
+<nav>
+  <div class="logo-section">
+    <img src="{% static 'logoukm.png' %}" alt="UKM Logo" class="logo-img" />
+    <div class="logo-text">SvFinder</div>
+  </div>
+  <div class="nav-links">
+    <a href="{% url 'mainstudent' %}"><i class="fas fa-home"></i> Home</a>
+  </div>
+</nav>
+
+{% if error_message %}
+  <ul class="error-messages" role="alert" aria-live="assertive">
+    <li>{{ error_message }}</li>
+  </ul>
+{% endif %}
+
+
+<!-- Request Form Section -->
+<section class="request-form" aria-label="Supervisor Request Form Section">
+  <div class="info-section" aria-describedby="form-description">
+    <h2>Request Your Supervisor</h2>
+    <p id="form-description">Connect with the right academic guide to support your Final Year Project.</p>
+    <ul>
+      <li>Submit your official supervisor request</li>
+      <li>Begin your academic journey with proper guidance</li>
+      <li>Upload required documents and submit</li>
+    </ul>
+  </div>
+
+  <form method="POST" enctype="multipart/form-data" onsubmit="return validateForm();" aria-label="Supervisor Request Form">
+    {% csrf_token %}
+    <div class="form-group">
+      <label for="id_permohonan">Application ID</label>
+      <input type="text" id="id_permohonan" name="id_permohonan" value="{{ id_permohonan }}" readonly />
+    </div>
+
+    <div class="form-group">
+      <label for="id_pelajar">Student ID</label>
+      <input type="text" id="id_pelajar" name="id_pelajar" value="{{ id_pelajar }}" readonly />
+    </div>
+
+    <div class="form-group">
+      <label for="id_penyelia">Supervisor ID</label>
+      <input type="text" id="id_penyelia" name="id_penyelia" value="{{ id_penyelia }}" readonly />
+    </div>
+
+    <div class="form-group">
+      <label for="tarikh_permohonan">Application Date</label>
+      <input type="text" id="tarikh_permohonan" name="tarikh_permohonan" value="{{ tarikh_permohonan }}" readonly />
+    </div>
+
+    <div class="form-group">
+      <label for="fail_permohonan">Application File (PDF Only)</label>
+      <input type="file" id="fail_permohonan" name="fail_permohonan" accept=".pdf" required />
+    </div>
+
+    <div class="checkbox-group">
+      <input type="checkbox" id="confirm1" name="confirm1" />
+      <label for="confirm1">I confirm that all provided information is accurate.</label>
+    </div>
+
+    <div class="checkbox-group">
+      <input type="checkbox" id="confirm2" name="confirm2" />
+      <label for="confirm2">I agree to the university’s terms and conditions.</label>
+    </div>
+
+    <div>
+      <button type="button" class="back-button" onclick="goBack()" aria-label="Go back to previous page">Back</button>
+      <button type="submit" class="submit-button" aria-label="Submit Supervisor Request">Submit</button>
+    </div>
+  </form>
+</section>
+
+</body>
+</html>

@@ -1,0 +1,203 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>About | SvFinder</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+     * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      
+      background: linear-gradient(to right, #f0f4ff, #e5ecff);
+      color: #1e1e1e;
+      overflow-x: hidden;
+    }
+
+    nav {
+      background-color: #001c54;
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 40px;
+      height: 60px;
+      box-shadow: 0 3px 5px rgba(0,0,0,0.1);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      height: 75px;
+      
+    }
+
+    .logo-section {
+       display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+
+    .logo-img {
+      height: 38px;
+    }
+
+    .logo {
+     font-size: 1.2rem;
+      font-weight: 600;
+      color: #FFD700;
+    }
+
+    .nav-links {
+       display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    .nav-links a {
+      color: white;
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.2s ease;
+    }
+
+    .nav-links a:hover {
+      color: #FFD700;
+    }
+
+    .signup-btn {
+      background-color: #FFD700;
+      color: #000;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-weight: 600;
+      font-size: 14px;
+      text-decoration: none;
+    }
+
+    .hero {
+      background: url("{% static 'grad3.jpg' %}") center/cover no-repeat;
+      height: 320px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: white;
+      position: relative;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+    }
+
+    .hero h1 {
+      position: relative;
+      font-size: 3rem;
+      z-index: 2;
+      color: #FFD700;
+    }
+
+    .about-section {
+      padding: 60px 40px;
+      max-width: 1000px;
+      margin: 0 auto;
+      background-color: white;
+      margin-top: -60px;
+      border-radius: 10px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      position: relative;
+      z-index: 10;
+    }
+
+    .about-section h2 {
+      font-size: 2rem;
+      margin-bottom: 20px;
+      color: #002147;
+    }
+
+    .about-section p {
+      font-size: 1.1rem;
+      color: #444;
+      margin-bottom: 20px;
+    }
+
+    .highlight {
+      color: #FFD700;
+      font-weight: 600;
+    }
+
+    @media (max-width: 768px) {
+      nav {
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .hero h1 {
+        font-size: 2rem;
+      }
+
+      .about-section {
+        padding: 30px 20px;
+      }
+
+      .about-section h2 {
+        font-size: 1.6rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Navigation -->
+<nav>
+  <div class="logo-section">
+    <img src="{% static 'logoukm.png' %}" alt="UKM Logo" class="logo-img" />
+    <div class="logo">SvFinder</div>
+  </div>
+  <div class="nav-links">
+    <a href="{% url 'index' %}">Home</a>
+
+    <a href="{% url 'login' %}" class="signup-btn">Login →</a>
+  </div>
+</nav>
+
+<!-- Hero -->
+<div class="hero">
+  <h1>Discover the Future of FYP Supervision</h1>
+</div>
+
+<!-- About Section -->
+<section class="about-section">
+  <h2>About <span class="highlight">SvFinder</span></h2>
+  <p>
+    <span class="highlight">SvFinder</span> is an innovative student-supervisor matching platform crafted to revolutionize the Final Year Project (FYP) experience at <strong>Universiti Kebangsaan Malaysia (UKM)</strong>.
+  </p>
+  <p>
+    Designed with the needs of both students and supervisors in mind, SvFinder empowers students to discover and connect with potential supervisors based on aligned research interests and academic goals.
+  </p>
+  <p>
+    Supervisors can effortlessly manage incoming applications, maintain balanced supervision loads, and monitor allocations with clarity and ease.
+  </p>
+  <p>
+    Our mission is simple yet impactful: to <span class="highlight">streamline and elevate the FYP supervision process</span> through a centralized, intuitive system. With real-time updates and seamless communication, SvFinder ensures smoother collaborations and stronger academic partnerships.
+  </p>
+  <p>
+    This system was proudly <span class="highlight">conceived, developed, and brought to life by Syasya Fadhilah</span> — an IT student with a vision to simplify and enrich the academic workflow at UKM.
+  </p>
+</section>
+
+</body>
+</html>

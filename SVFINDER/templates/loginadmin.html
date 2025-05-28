@@ -1,0 +1,290 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Login | SvFinder</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: linear-gradient(to right, #f0f4ff, #e5ecff);
+      color: #1e1e1e;
+      overflow-x: hidden;
+    }
+
+    /* --- Navbar Styling --- */
+    nav {
+      background-color: #001c54;
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 40px;
+      height: 75px;
+      box-shadow: 0 3px 5px rgba(0,0,0,0.1);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    .logo-section {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo-img {
+      height: 38px;
+    }
+
+    .logo {
+      font-weight: 600;
+      font-size: 1.2rem;
+      color: #FFD700;
+    }
+
+    .signup-btn {
+      background-color: #FFD700;
+      color: #000;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-weight: 600;
+      font-size: 14px;
+      text-decoration: none;
+    }
+
+    .signup-btn:hover {
+      background-color: #e6c800;
+    }
+
+    /* --- Login Container Styling --- */
+    .login-container {
+      max-width: 480px;
+      margin: 80px auto;
+      background: rgba(255, 255, 255, 0.9);
+      padding: 40px;
+      border-radius: 12px;
+      box-shadow: 0 6px 30px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease;
+    }
+
+    .login-container:hover {
+      transform: scale(1.02);
+    }
+
+    .login-container h2 {
+      text-align: center;
+      font-size: 28px;
+      margin-bottom: 30px;
+      color: #1c0e52;
+      font-weight: 600;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 500;
+      font-size: 14px;
+      color: #333;
+    }
+
+    .input-group {
+      position: relative;
+      margin-bottom: 20px;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px 40px 12px 40px;
+      margin-bottom: 20px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 14px;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    input:focus {
+      border-color: #FFD700;
+      outline: none;
+      box-shadow: 0 0 5px rgba(255, 215, 0, 0.6);
+    }
+
+    .input-group i {
+      position: absolute;
+      top: 50%;
+      left: 12px;
+      transform: translateY(-50%);
+      font-size: 18px;
+      color: #1c0e52;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background-color: #1c0e52;
+      color: white;
+      font-size: 15px;
+      border: none;
+      border-radius: 6px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.3s ease, transform 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #2d0353;
+      transform: scale(1.05);
+    }
+
+    .goback-btn {
+      margin-top: 15px;
+      text-align: center;
+    }
+
+    .goback-btn button {
+      background-color: transparent;
+      color: #1c0e52;
+      border: 1px solid #1c0e52;
+      padding: 10px 20px;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 500;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    .goback-btn button:hover {
+      background-color: #1c0e52;
+      color: #fff;
+    }
+
+    /* --- Improved Error Message Styling --- */
+    .error-messages {
+      margin-top: 20px;
+      background-color: #ffe6e6;
+      border: 1px solid #ffb3b3;
+      border-left: 5px solid #cc0000;
+      padding: 15px 20px;
+      border-radius: 8px;
+      font-size: 14px;
+      color: #cc0000;
+      list-style: none;
+      position: relative;
+      animation: fadeIn 0.3s ease-in-out;
+    }
+
+    .error-messages li {
+      margin-bottom: 8px;
+      padding-left: 22px;
+      position: relative;
+    }
+
+    .error-messages li::before {
+      content: "\f071";
+      font-family: "Font Awesome 6 Free";
+      font-weight: 900;
+      position: absolute;
+      left: 0;
+      top: 0;
+      color: #cc0000;
+    }
+
+    .success-messages {
+  margin-top: 20px;
+  background-color: #e6ffe6; /* light green */
+  border: 1px solid #b3ffb3;
+  border-left: 5px solid #008000; /* dark green */
+  padding: 15px 20px;
+  border-radius: 8px;
+  font-size: 14px;
+  color: #006600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.success-messages i {
+  color: #006600;
+  font-size: 18px;
+}
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-5px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 768px) {
+      .login-container {
+        margin: 40px 20px;
+        padding: 30px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav>
+    <div class="logo-section">
+      <img src="{% static 'logoukm.png' %}" alt="UKM Logo" class="logo-img" />
+      <div class="logo">SvFinder</div>
+    </div>
+    <a href="{% url 'signup' %}" class="signup-btn">
+      <i class="fas fa-user-plus"></i> Sign up →
+    </a>
+  </nav>
+
+  <!-- Login Container -->
+  <div class="login-container">
+    <h2>Admin Login Portal</h2>
+
+    <form action="{% url 'loginadmin' %}" method="POST">
+      {% csrf_token %}
+
+      <div class="input-group">
+        <i class="fas fa-id-card"></i>
+        <label for="id_admin">Admin ID</label>
+        <input type="text" id="id_admin" name="id_admin" required placeholder="Enter your Admin ID">
+      </div>
+
+      <div class="input-group">
+        <i class="fas fa-lock"></i>
+        <label for="katalaluan_admin">Password</label>
+        <input type="password" id="katalaluan_admin" name="katalaluan_admin" required placeholder="Enter your Password">
+      </div>
+
+      
+
+      <button type="submit">Login</button>
+
+      {% if messages %}
+  {% for message in messages %}
+    <div class="{% if message.tags == 'error' %}error-messages{% elif message.tags == 'success' %}success-messages{% else %}info-messages{% endif %}">
+      {% if message.tags == 'error' %}
+        <i class="fas fa-exclamation-triangle"></i>
+      {% elif message.tags == 'success' %}
+        <i class="fas fa-check-circle"></i>
+      {% endif %}
+      {{ message }}
+    </div>
+  {% endfor %}
+{% endif %}
+    </form>
+
+    <div class="goback-btn">
+      <a href="{% url 'index' %}"><button type="button">Go Back</button></a>
+    </div>
+  </div>
+
+</body>
+</html>

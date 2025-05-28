@@ -1,0 +1,400 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Supervisor Signup | SvFinder</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --primary-color: #002147;
+      --accent-color: #ffc107;
+      --bg-color: #f8f9fa;
+      --text-color: #333;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      background: linear-gradient(to right, #eef3fc, #e4e9ff);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    nav {
+      background-color: #001c54;
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 40px;
+      height: 75px;
+      box-shadow: 0 3px 5px rgba(0,0,0,0.1);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    .logo-section {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo-img {
+      height: 38px;
+    }
+
+    .logo {
+      font-weight: 600;
+      font-size: 1.2rem;
+      color: #FFD700;
+    }
+
+    .login-btn {
+      background-color: #FFD700;
+      color: #000;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-weight: 600;
+      font-size: 14px;
+      text-decoration: none;
+    }
+
+    .login-btn:hover {
+      background-color: #e6c800;
+    }
+
+    main {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 60px 20px;
+    }
+
+    form {
+      background-color: white;
+      padding: 60px 50px;
+      border-radius: 20px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+      width: 100%;
+      max-width: 700px;
+    }
+
+    h2 {
+      text-align: center;
+      font-size: 32px;
+      color: #002b5c;
+      font-weight: 700;
+      margin-bottom: 35px;
+    }
+
+    .input-group {
+      margin-bottom: 22px;
+    }
+
+    .input-group label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 500;
+      color: #333;
+    }
+
+    .input-icon-wrapper {
+      display: flex;
+      align-items: center;
+      background: #fafafa;
+      border: 1.5px solid #ccc;
+      border-radius: 10px;
+      padding: 0 10px;
+      transition: border 0.3s ease;
+    }
+
+    .input-icon-wrapper:focus-within {
+      border-color: var(--primary-color);
+      background: white;
+    }
+
+    .input-icon-wrapper i {
+      color: #001c54;
+      font-size: 16px;
+      margin-right: 10px;
+      flex-shrink: 0;
+    }
+
+    .input-icon-wrapper input,
+    .input-icon-wrapper select,
+    .input-icon-wrapper textarea {
+      border: none;
+      background: transparent;
+      padding: 12px 0;
+      flex: 1;
+      font-size: 15px;
+      outline: none;
+      resize: vertical;
+    }
+
+    .toggle-password {
+      position: absolute;
+      right: 12px;
+      cursor: pointer;
+      color: #666;
+    }
+
+    .error {
+      color: #d93025;
+      font-size: 14px;
+      margin-top: 5px;
+      padding-left: 8px;
+    }
+
+    .success-message {
+      text-align: center;
+      margin-bottom: 25px;
+      color: #5dc01f;
+      font-weight: 500;
+      font-size: 16px;
+    }
+
+    .message-box {
+      padding: 15px 20px;
+      border-radius: 8px;
+      margin-bottom: 25px;
+      text-align: center;
+      font-weight: 500;
+      font-size: 15px;
+    }
+
+    .message-box.success {
+      background-color: #e6f4ea;
+      color: #137333;
+      border: 1.5px solid #137333;
+    }
+
+    .message-box.error {
+      background-color: #fce8e6;
+      color: #d93025;
+      border: 1.5px solid #d93025;
+    }
+
+    button[type="submit"] {
+      width: 100%;
+      background-color: #001c54;
+      color: white;
+      font-weight: 600;
+      font-size: 16px;
+      padding: 14px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      margin-top: 10px;
+      transition: background-color 0.3s ease;
+    }
+
+    button[type="submit"]:hover {
+      background-color: #000d30;
+    }
+
+    .goback-btn {
+      text-align: center;
+      margin-top: 25px;
+    }
+
+    .goback-btn a {
+      text-decoration: none;
+      color: #001c54;
+      font-weight: 600;
+      border: 1.5px solid #001c54;
+      padding: 10px 20px;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+    }
+
+    .goback-btn a:hover {
+      background-color: #001c54;
+      color: white;
+    }
+
+    @media (max-width: 600px) {
+      form {
+        padding: 35px 25px;
+      }
+    }
+  </style>
+</head>
+<body>
+<nav>
+  <div class="logo-section">
+    <img src="{% static 'logoukm.png' %}" alt="UKM Logo" class="logo-img" />
+    <div class="logo">SvFinder</div>
+  </div>
+  <a href="{% url 'loginsupervisor' %}" class="login-btn">
+    <i class="fas fa-sign-in-alt"></i> Login →
+  </a>
+</nav>
+<main>
+  <form id="supervisor-form" action="{% url 'signupsupervisor' %}" method="post" enctype="multipart/form-data" novalidate>
+    {% csrf_token %}
+
+    {% if message %}
+    <div class="message-box {% if success %}success{% else %}error{% endif %}">
+      {{ message }}
+    </div>
+    {% endif %}
+
+    <h2>Supervisor Signup Portal</h2>
+
+    <div class="input-group">
+      <label for="id_penyelia">ID</label>
+      <div class="input-icon-wrapper">
+        <i class="fas fa-id-badge"></i>
+        <input type="text" id="id_penyelia" name="id_penyelia" placeholder="Enter your ID" required />
+      </div>
+      <div class="error" id="id-error"></div>
+    </div>
+
+    <div class="input-group">
+      <label for="nama_penyelia">Name</label>
+      <div class="input-icon-wrapper">
+        <i class="fas fa-user"></i>
+        <input type="text" id="nama_penyelia" name="nama_penyelia" placeholder="Enter your full name" required />
+      </div>
+    </div>
+
+    <div class="input-group">
+      <label for="email_penyelia">Email</label>
+      <div class="input-icon-wrapper">
+        <i class="fas fa-envelope"></i>
+        <input type="email" id="email_penyelia" name="email_penyelia" placeholder="Enter your email" required />
+      </div>
+      <div class="error" id="email-error"></div>
+    </div>
+
+    <div class="input-group">
+      <label for="no_penyelia">Phone Number</label>
+      <div class="input-icon-wrapper">
+        <i class="fas fa-phone"></i>
+        <input type="text" id="no_penyelia" name="no_penyelia" placeholder="Enter your phone number" required />
+      </div>
+    </div>
+
+    <div class="input-group">
+      <label for="category_penyelia">Category</label>
+      <div class="input-icon-wrapper">
+        <i class="fas fa-briefcase"></i>
+        <select id="category_penyelia" name="category_penyelia" required>
+          <option value="" disabled selected>Select category</option>
+          <option value="Senior Lecturer">Senior Lecturer</option>
+          <option value="Lecturer">Lecturer</option>
+          <option value="IT Instructor">IT Instructor</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="input-group">
+      <label for="bilik_penyelia">Room</label>
+      <div class="input-icon-wrapper">
+        <i class="fas fa-door-closed"></i>
+        <input type="text" id="bilik_penyelia" name="bilik_penyelia" placeholder="Enter room (optional)" />
+      </div>
+    </div>
+
+    <div class="input-group">
+      <label for="bio_penyelia">Biography</label>
+      <div class="input-icon-wrapper">
+        <i class="fas fa-align-left"></i>
+        <textarea id="bio_penyelia" name="bio_penyelia" placeholder="Write a short biography..."></textarea>
+      </div>
+    </div>
+
+    <div class="input-group">
+      <label for="academic_penyelia">Ukm Sarjana</label>
+      <div class="input-icon-wrapper">
+        <i class="fas fa-link"></i>
+        <input type="url" id="academic_penyelia" name="academic_penyelia" placeholder="https://example.com" required />
+      </div>
+    </div>
+
+    <div class="input-group">
+      <label for="kepakaran_penyelia">Expertise</label>
+      <div class="input-icon-wrapper">
+        <i class="fas fa-lightbulb"></i>
+        <input type="text" id="kepakaran_penyelia" name="kepakaran_penyelia" placeholder="Enter your expertise" required />
+      </div>
+    </div>
+
+    <div class="input-group password-group">
+      <label for="katalaluan_penyelia">Password</label>
+      <div class="input-icon-wrapper" style="position: relative;">
+        <i class="fas fa-lock"></i>
+        <input type="password" id="katalaluan_penyelia" name="katalaluan_penyelia" placeholder="Enter your password" required />
+        <i class="fas fa-eye toggle-password" onclick="togglePassword()" style="position: absolute; right: 12px;"></i>
+      </div>
+    </div>
+
+    <div class="input-group">
+      <label for="gambar_penyelia">Upload Image</label>
+      <div class="input-icon-wrapper">
+        <i class="fas fa-image"></i>
+        <input type="file" id="gambar_penyelia" name="gambar_penyelia" accept="image/*" />
+      </div>
+    </div>
+
+    <button type="submit">Create Account</button>
+
+    <div class="goback-btn">
+      <a href="{% url 'loginsupervisor' %}">Back to Login</a>
+    </div>
+  </form>
+</main>
+
+<script>
+  function togglePassword() {
+    const passwordInput = document.getElementById("katalaluan_penyelia");
+    const toggleIcon = document.querySelector(".toggle-password");
+    if (passwordInput.type === "password") {
+      passwordInput.type = "text";
+      toggleIcon.classList.replace("fa-eye", "fa-eye-slash");
+    } else {
+      passwordInput.type = "password";
+      toggleIcon.classList.replace("fa-eye-slash", "fa-eye");
+    }
+  }
+
+  document.getElementById("supervisor-form").addEventListener("submit", function(e) {
+    const id = document.getElementById("id_penyelia").value.trim();
+    const email = document.getElementById("email_penyelia").value.trim();
+
+    const idPattern = /^[Kk]\d{6}$/;
+    const emailPattern = /^[^\s@]+@ukm\.edu\.my$/i;
+
+    let valid = true;
+
+    if (!idPattern.test(id)) {
+      document.getElementById("id-error").textContent = "ID must start with 'K' followed by 6 digits (e.g. K123456)";
+      valid = false;
+    } else {
+      document.getElementById("id-error").textContent = "";
+    }
+
+    if (!emailPattern.test(email)) {
+      document.getElementById("email-error").textContent = "Email must end with @ukm.edu.my";
+      valid = false;
+    } else {
+      document.getElementById("email-error").textContent = "";
+    }
+
+    if (!valid) e.preventDefault();
+  });
+</script>
+</body>
+</html>

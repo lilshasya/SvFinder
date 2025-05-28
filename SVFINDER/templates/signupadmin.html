@@ -1,0 +1,343 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Signup | SvFinder</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --primary-color: #002147;
+      --accent-color: #ffc107;
+      --bg-color: #f8f9fa;
+      --text-color: #333;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      background: linear-gradient(to right, #eef3fc, #e4e9ff);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    nav {
+      background-color: #001c54;
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 40px;
+      height: 75px;
+      box-shadow: 0 3px 5px rgba(0,0,0,0.1);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    .logo-section {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo-img {
+      height: 38px;
+    }
+
+    .logo {
+      font-weight: 600;
+      font-size: 1.2rem;
+      color: #FFD700;
+    }
+
+    .login-btn {
+      background-color: #FFD700;
+      color: #000;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-weight: 600;
+      font-size: 14px;
+      text-decoration: none;
+    }
+
+    main {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 60px 20px;
+    }
+
+    form {
+      background-color: white;
+      padding: 60px 50px;
+      border-radius: 20px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+      width: 100%;
+      max-width: 650px;
+    }
+
+    h2 {
+      text-align: center;
+      font-size: 32px;
+      color: #002b5c;
+      font-weight: 700;
+      margin-bottom: 35px;
+    }
+
+    .input-group {
+      margin-bottom: 22px;
+    }
+
+    .input-group label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 500;
+      color: #333;
+    }
+
+    .input-icon-wrapper {
+      display: flex;
+      align-items: center;
+      background: #fafafa;
+      border: 1.5px solid #ccc;
+      border-radius: 10px;
+      padding: 0 10px;
+      transition: border 0.3s ease;
+    }
+
+    .input-icon-wrapper:focus-within {
+      border-color: var(--primary-color);
+      background: white;
+    }
+
+    .input-icon-wrapper i {
+      color: #001c54;
+      font-size: 16px;
+      margin-right: 10px;
+      flex-shrink: 0;
+    }
+
+    .input-icon-wrapper input {
+      border: none;
+      background: transparent;
+      padding: 12px 0;
+      flex: 1;
+      font-size: 15px;
+      outline: none;
+    }
+
+    .error-text {
+      color: #d93025;
+      font-size: 14px;
+      margin-top: 5px;
+    }
+
+    .message-box {
+      border-radius: 8px;
+      padding: 15px 20px;
+      font-size: 15px;
+      font-weight: 500;
+      margin-bottom: 25px;
+      text-align: center;
+      border-left: 6px solid;
+    }
+
+    .success-box {
+      background-color: #e6f4ea;
+      color: #137333;
+      border-color: #137333;
+    }
+
+    .error-box {
+      background-color: #fce8e6;
+      color: #d93025;
+      border-color: #d93025;
+    }
+
+    button[type="submit"] {
+      width: 100%;
+      background-color: #001c54;
+      color: white;
+      font-weight: 600;
+      font-size: 16px;
+      padding: 14px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      margin-top: 10px;
+      transition: background-color 0.3s ease;
+    }
+
+    button[type="submit"]:hover {
+      background-color: #000d30;
+    }
+
+    .goback-btn {
+      text-align: center;
+      margin-top: 25px;
+    }
+
+    .goback-btn a {
+      text-decoration: none;
+      color: #001c54;
+      font-weight: 600;
+      border: 1.5px solid #001c54;
+      padding: 10px 20px;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+    }
+
+    .goback-btn a:hover {
+      background-color: #001c54;
+      color: white;
+    }
+
+    .toggle-password {
+      position: absolute;
+      right: 12px;
+      cursor: pointer;
+      color: #999;
+    }
+
+    @media (max-width: 600px) {
+      form {
+        padding: 35px 25px;
+      }
+    }
+  </style>
+</head>
+<body>
+<nav>
+  <div class="logo-section">
+    <img src="{% static 'logoukm.png' %}" alt="UKM Logo" class="logo-img" />
+    <div class="logo">SvFinder</div>
+  </div>
+  <a href="{% url 'loginadmin' %}" class="login-btn">
+    <i class="fas fa-sign-in-alt"></i> Login →
+  </a>
+</nav>
+
+<main>
+  <form id="admin-signup-form" action="{% url 'signupadmin' %}" method="post" novalidate>
+    {% csrf_token %}
+
+    {% if message %}
+      <div class="message-box {% if message_type == 'error' %}error-box{% else %}success-box{% endif %}">
+        {{ message }}
+      </div>
+    {% endif %}
+
+    <h2>Admin Signup Portal</h2>
+
+    <div class="input-group">
+      <label for="id_admin">Admin ID</label>
+      <div class="input-icon-wrapper">
+        <i class="fas fa-id-card"></i>
+        <input type="text" id="id_admin" name="id_admin" placeholder="Enter Admin ID" required oninput="this.value = this.value.toUpperCase()">
+      </div>
+    </div>
+
+    <div class="input-group">
+      <label for="nama_admin">Full Name</label>
+      <div class="input-icon-wrapper">
+        <i class="fas fa-user"></i>
+        <input type="text" id="nama_admin" name="nama_admin" placeholder="Enter full name" required>
+      </div>
+    </div>
+
+    <div class="input-group">
+      <label for="email_admin">Email Address</label>
+      <div class="input-icon-wrapper">
+        <i class="fas fa-envelope"></i>
+        <input type="email" id="email_admin" name="email_admin" placeholder="Enter email address" required>
+      </div>
+    </div>
+
+    <div class="input-group">
+      <label for="no_admin">Phone Number</label>
+      <div class="input-icon-wrapper">
+        <i class="fas fa-phone"></i>
+        <input type="text" id="no_admin" name="no_admin" placeholder="Enter phone number" required>
+      </div>
+    </div>
+
+    <div class="input-group password-group">
+      <label for="katalaluan_admin">Password</label>
+      <div class="input-icon-wrapper" style="position: relative;">
+        <i class="fas fa-lock"></i>
+        <input type="password" id="katalaluan_admin" name="katalaluan_admin" placeholder="Enter password" required>
+        <i class="fas fa-eye toggle-password" onclick="togglePassword()"></i>
+      </div>
+    </div>
+
+    <button type="submit">Create Admin Account</button>
+
+    <div class="goback-btn">
+      <a href="{% url 'loginadmin' %}">Back to Login</a>
+    </div>
+  </form>
+</main>
+
+<script>
+  function togglePassword() {
+    const pwInput = document.getElementById("katalaluan_admin");
+    const icon = document.querySelector(".toggle-password");
+    if (pwInput.type === "password") {
+      pwInput.type = "text";
+      icon.classList.replace("fa-eye", "fa-eye-slash");
+    } else {
+      pwInput.type = "password";
+      icon.classList.replace("fa-eye-slash", "fa-eye");
+    }
+  }
+
+  document.getElementById("admin-signup-form").addEventListener("submit", function (e) {
+    // ID validation
+    const idInput = document.getElementById("id_admin");
+    const emailInput = document.getElementById("email_admin");
+
+    const errorId = document.getElementById("id-admin-error");
+    const errorEmail = document.getElementById("email-admin-error");
+
+    if (errorId) errorId.remove();
+    if (errorEmail) errorEmail.remove();
+
+    const idPattern = /^K\d{6}$/;
+    const emailPattern = /^[a-zA-Z0-9._%+-]+@ukm\.edu\.my$/i;
+
+    let valid = true;
+
+    if (!idPattern.test(idInput.value.trim())) {
+      const errorMsg = document.createElement("div");
+      errorMsg.id = "id-admin-error";
+      errorMsg.classList.add("error-text");
+      errorMsg.textContent = "ID must start with 'K' followed by 6 digits (e.g. K123456)";
+      idInput.parentElement.parentElement.appendChild(errorMsg);
+      valid = false;
+    }
+
+    if (!emailPattern.test(emailInput.value.trim())) {
+      const errorEmailMsg = document.createElement("div");
+      errorEmailMsg.id = "email-admin-error";
+      errorEmailMsg.classList.add("error-text");
+      errorEmailMsg.textContent = "Email must be a valid UKM email (e.g. yourname@ukm.edu.my)";
+      emailInput.parentElement.parentElement.appendChild(errorEmailMsg);
+      valid = false;
+    }
+
+    if (!valid) e.preventDefault();
+  });
+</script>
+
+</body>
+</html>

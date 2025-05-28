@@ -1,0 +1,295 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Supervisor Information | SvFinder</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Georgia&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+
+  <style>
+    :root {
+      --primary-color: #002147;
+      --accent-color: #ffc107;
+      --bg-color: #f8f9fa;
+      --text-color: #333;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      background: linear-gradient(to right, #f0f4ff, #e5ecff);
+      color: #1e1e1e;
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+    }
+
+    /* ===== NAVIGATION BAR ===== */
+    nav {
+      background-color: #001c54;
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 40px;
+      height: 75px;
+      box-shadow: 0 3px 5px rgba(0,0,0,0.1);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    .logo-section {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo-img {
+      height: 38px;
+    }
+
+    .logo-text {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: #FFD700;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    .nav-links a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 14px;
+      transition: color 0.3s ease;
+    }
+
+    .nav-links a:hover {
+      color: #FFD700;
+    }
+
+    .signup-btn {
+      background-color: #FFD700;
+      color: #000;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-weight: 600;
+      font-size: 14px;
+      text-decoration: none;
+    }
+
+    @media (max-width: 900px) {
+      .nav-links {
+        gap: 1rem;
+      }
+
+      .logo-text {
+        font-size: 1.1rem;
+      }
+
+      nav {
+        padding: 10px 20px;
+      }
+    }
+
+    /* ===== Main Content ===== */
+    .container {
+      max-width: 1100px;
+      margin: 60px auto 40px;
+      background-color: white;
+      padding: 40px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    .back-btn {
+      display: inline-block;
+      font-family: 'Georgia', serif;
+      font-size: 14px;
+      font-weight: 600;
+      color: #002147;
+      background-color: #fff;
+      border: 2px solid #002147;
+      padding: 8px 20px;
+      border-radius: 6px;
+      margin-bottom: 25px;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+
+    .back-btn:hover {
+      background-color: #002147;
+      color: #fff;
+    }
+
+    .supervisor-info h1 {
+      font-size: 32px;
+      color: var(--primary-color);
+      text-align: center;
+      margin-bottom: 30px;
+      font-weight: 600;
+    }
+
+    .supervisor-details {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 40px;
+      justify-content: center;
+    }
+
+    .supervisor-image {
+      width: 270px;
+      height: 350px;
+      border-radius: 10px;
+      object-fit: cover;
+      border: 4px solid var(--accent-color);
+    }
+
+    table {
+      width: 100%;
+      max-width: 650px;
+      border-collapse: collapse;
+      font-size: 16px;
+    }
+
+    th, td {
+      padding: 12px 16px;
+      border-bottom: 1px solid #ccc;
+      text-align: left;
+    }
+
+    th {
+      background-color: var(--accent-color);
+      color: #000;
+      font-weight: 600;
+    }
+
+    td {
+      background-color: #f9f9f9;
+    }
+
+    .uni-request-btn {
+      display: block;
+      font-family: 'Georgia', serif;
+      font-size: 16px;
+      font-weight: 600;
+      color: #002147;
+      background-color: #fff;
+      border: 2px solid #002147;
+      padding: 10px 24px;
+      border-radius: 6px;
+      margin: 30px auto 0;
+      text-align: center;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      max-width: 300px;
+    }
+
+    .uni-request-btn:hover {
+      background-color: #002147;
+      color: #fff;
+    }
+
+    @media (max-width: 768px) {
+      .supervisor-details {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .container {
+        margin: 80px 20px;
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- Navigation -->
+<nav>
+  <div class="logo-section">
+    <img src="{% static 'logoukm.png' %}" alt="UKM Logo" class="logo-img" />
+    <div class="logo-text">SvFinder</div>
+  </div>
+</nav>
+
+<!-- Main Content -->
+<div class="container">
+  <a href="{% url 'mainstudent' %}" class="back-btn" aria-label="Back to student main page">
+    ← Back to Student Page
+  </a>
+
+  <div class="supervisor-info">
+    <h1>Supervisor Information</h1>
+
+    <div class="supervisor-details">
+      <!-- Supervisor Image -->
+      <img src="{{ supervisor.gambar_penyelia.url }}" alt="{{ supervisor.nama_penyelia }}" class="supervisor-image" />
+
+      <!-- Details Table -->
+      <table>
+        <tr>
+          <th>Name</th>
+          <td>{{ supervisor.nama_penyelia }}</td>
+        </tr>
+        <tr>
+          <th>Email</th>
+          <td>{{ supervisor.email_penyelia }}</td>
+        </tr>
+        <tr>
+          <th>ID</th>
+          <td>{{ supervisor.id_penyelia }}</td>
+        </tr>
+        <tr>
+          <th>Phone</th>
+          <td>{{ supervisor.no_penyelia }}</td>
+        </tr>
+        <tr>
+          <th>Expertise</th>
+          <td>{{ supervisor.kepakaran_penyelia }}</td>
+        </tr>
+        <tr>
+          <th>Office</th>
+          <td>{{ supervisor.bilik_penyelia }}</td>
+        </tr>
+        <tr>
+          <th>Bio</th>
+          <td>{{ supervisor.bio_penyelia }}</td>
+        </tr>
+        <tr>
+  <th>Ukm Sarjana</th>
+  <td>
+    <a href="{{ supervisor.academic_penyelia }}" target="_blank" style="color: #002147; text-decoration: underline;">
+      {{ supervisor.academic_penyelia }}
+    </a>
+  </td>
+</tr>
+
+      </table>
+    </div>
+
+    <!-- Request Button -->
+    <a href="{% url 'requestform' supervisor.id_penyelia %}" class="uni-request-btn" aria-label="Request supervision from {{ supervisor.nama_penyelia }}">
+      📝 Request Supervision
+    </a>
+  </div>
+</div>
+
+</body>
+</html>

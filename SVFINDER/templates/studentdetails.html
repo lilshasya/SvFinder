@@ -1,0 +1,81 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Student Detail</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f6f6f6;
+            padding: 40px;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        label {
+            display: block;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+        input, select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        input[readonly], textarea[readonly] {
+            background-color: #f0f0f0;
+        }
+        .button-group {
+            margin-top: 20px;
+            text-align: right;
+        }
+        .submit-btn {
+            padding: 10px 20px;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+        .accept-btn {
+            background-color: #4CAF50;
+        }
+        .reject-btn {
+            background-color: #f44336;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Student Application Details</h2>
+
+        <label>ID Permohonan:</label>
+        <input type="text" value="{{ permohonan.id_permohonan }}" readonly>
+
+        <label>ID Pelajar:</label>
+        <input type="text" value="{{ permohonan.id_pelajar_id }}" readonly>
+
+        <label>Nama Pelajar:</label>
+        <input type="text" value="{{ permohonan.id_pelajar.nama_pelajar }}" readonly>
+
+        <label>Tarikh Permohonan:</label>
+        <input type="text" value="{{ permohonan.tarikh_permohonan }}" readonly>
+
+        <label>Sinopsis:</label>
+        <a href="/media/{{ permohonan.sinopsis }}" target="_blank">View Sinopsis</a>
+
+         <div class="button-group">
+            <form action="{% url 'result' permohonan.id_permohonan %}" method="get">
+                <button type="submit" class="submit-btn accept-btn">Next</button>
+            </form>
+        </div>
+</body>
+</html>

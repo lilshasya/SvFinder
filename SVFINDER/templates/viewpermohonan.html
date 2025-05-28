@@ -1,0 +1,229 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Application List | SvFinder</title>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+
+  <style>
+    /* Base and Layout */
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Poppins', sans-serif;
+      background-color: #f4f6fb;
+      color: #333;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+      padding: 40px 20px;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1100px;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      padding: 40px;
+      box-sizing: border-box;
+    }
+
+    /* Header */
+    header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 2.5rem;
+      color: #1a093f;
+      font-weight: 600;
+    }
+
+    header p {
+      margin-top: 8px;
+      font-size: 1.1rem;
+      color: #555;
+    }
+
+    /* Filter Section */
+    .filter {
+      text-align: right;
+      margin-bottom: 20px;
+    }
+
+    .filter label {
+      font-weight: 500;
+      margin-right: 10px;
+      color: #1a093f;
+    }
+
+    .filter select {
+      padding: 8px 12px;
+      font-size: 1rem;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      transition: border-color 0.3s;
+    }
+
+    .filter select:focus {
+      border-color: #1a093f;
+      outline: none;
+    }
+
+    /* Table Styling */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+      font-size: 1rem;
+    }
+
+    thead th {
+      background-color: #1a093f;
+      color: #fff;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 14px;
+      font-weight: 600;
+    }
+
+    tbody td {
+      padding: 14px;
+      border-bottom: 1px solid #ddd;
+      text-align: center;
+    }
+
+    tbody tr:nth-child(even) {
+      background-color: #f9f9f9;
+    }
+
+    tbody tr:hover {
+      background-color: #eef0ff;
+      cursor: default;
+    }
+
+    /* Summary Section */
+    .summary {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 30px;
+      border-top: 2px solid #1a093f;
+      padding-top: 20px;
+      font-weight: 600;
+      font-size: 1.05rem;
+      color: #1a093f;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .container {
+        padding: 20px;
+      }
+
+      table, thead, tbody, th, td, tr {
+        display: block;
+      }
+
+      thead {
+        display: none;
+      }
+
+      tbody tr {
+        background: #fff;
+        margin-bottom: 15px;
+        border: 1px solid #ddd;
+        padding: 10px;
+      }
+
+      tbody td {
+        padding: 10px;
+        text-align: right;
+        position: relative;
+        border: none;
+      }
+
+      tbody td::before {
+        content: attr(data-label);
+        position: absolute;
+        left: 10px;
+        font-weight: 600;
+        color: #1a093f;
+        text-align: left;
+      }
+
+      .summary {
+        flex-direction: column;
+        gap: 10px;
+        align-items: flex-start;
+      }
+
+      .filter {
+        text-align: left;
+        margin-bottom: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <header>
+      <h1>Universiti Kebangsaan Malaysia</h1>
+      <p>Application List | SvFinder</p>
+    </header>
+
+    <div class="filter">
+      <form method="get">
+        <label for="status">Application Status:</label>
+        <select name="status" id="status" onchange="this.form.submit()">
+          <option value="">-- All --</option>
+          <option value="Accepted" {% if selected_status == "Accepted" %}selected{% endif %}>Accepted</option>
+          <option value="Rejected" {% if selected_status == "Rejected" %}selected{% endif %}>Rejected</option>
+        </select>
+      </form>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Application ID</th>
+          <th>Student Name</th>
+          <th>Supervisor ID</th>
+          <th>Supervisor Name</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for permohonan in permohonans %}
+        <tr>
+          <td data-label="Application ID">{{ permohonan.id_permohonan }}</td>
+          <td data-label="Student Name">{{ permohonan.nama_pelajar }}</td>
+          <td data-label="Supervisor ID">{{ permohonan.id_penyelia }}</td>
+          <td data-label="Supervisor Name">{{ permohonan.nama_penyelia }}</td>
+          <td data-label="Status">{{ permohonan.status }}</td>
+        </tr>
+        {% empty %}
+        <tr>
+          <td colspan="5">No applications found.</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <div class="summary">
+      <div>Total Applications: {{ total_permohonan }}</div>
+      <div>Accepted: {{ count_accepted }}</div>
+      <div>Rejected: {{ count_rejected }}</div>
+    </div>
+  </div>
+
+</body>
+</html>

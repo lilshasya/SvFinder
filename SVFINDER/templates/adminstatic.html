@@ -1,0 +1,118 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Report Statistics</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            padding: 40px;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #4a148c;
+        }
+
+        .label {
+            font-weight: bold;
+            margin-top: 20px;
+            color: #4a148c;
+        }
+
+        .value {
+            background-color: #f0e6ff;
+            padding: 10px;
+            border-radius: 6px;
+            margin-top: 5px;
+        }
+
+        #chart-container {
+            margin-top: 40px;
+        }
+
+        .download-btn {
+            margin-top: 30px;
+            padding: 10px 20px;
+            background-color: #4a148c;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .download-btn:hover {
+            background-color: #6a1b9a;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container" id="report-content">
+    <h1>Admin Report Statistics</h1>
+
+    <div class="label">ID Laporan:</div>
+    <div class="value">{{ id_laporan }}</div>
+
+    <div class="label">Bilangan Diluluskan:</div>
+    <div class="value">{{ bilangan_diluluskan }}</div>
+
+    <div class="label">Bilangan Ditolak:</div>
+    <div class="value">{{ bilangan_ditolak }}</div>
+
+    <div class="label">ID Admin:</div>
+    <div class="value">{{ id_admin }}</div>
+
+    <div id="chart-container">
+        <canvas id="laporanChart" width="400" height="300"></canvas>
+    </div>
+
+    <button class="download-btn" onclick="downloadReport()">Download as PDF</button>
+</div>
+
+<script>
+    // Bar chart
+    const ctx = document.getElementById('laporanChart').getContext('2d');
+    const laporanChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['Diluluskan', 'Ditolak'],
+            datasets: [{
+                label: 'Bilangan Laporan',
+                data: [{ bilangan_diluluskan }, { bilangan_ditolak }],
+                backgroundColor: ['#81c784', '#e57373'],
+                borderRadius: 5
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { display: false },
+                title: { display: true, text: 'Statistik Laporan' }
+            }
+        }
+    });
+
+    // PDF download
+    function downloadReport() {
+        const element = document.getElementById('report-content');
+        html2pdf().from(element).save('Laporan_Admin.pdf');
+    }
+</script>
+
+</body>
+</html>

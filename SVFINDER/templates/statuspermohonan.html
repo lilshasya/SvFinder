@@ -1,0 +1,287 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Application Status - SvFinder | Universiti Kebangsaan Malaysia</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Georgia&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      background: linear-gradient(to right, #f0f4ff, #e5ecff);
+      color: #1e1e1e;
+      overflow-x: hidden;
+    }
+
+    nav {
+      background-color: #001c54;
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 40px;
+      height: 75px;
+      box-shadow: 0 3px 5px rgba(0,0,0,0.1);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    .logo-section {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo-img {
+      height: 38px;
+    }
+
+    .logo-text {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: #FFD700;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    .nav-links a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 14px;
+      transition: color 0.3s ease;
+    }
+
+    .nav-links a:hover {
+      color: #FFD700;
+    }
+
+    .signup-btn {
+      background-color: #FFD700;
+      color: #000;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-weight: 600;
+      font-size: 14px;
+      text-decoration: none;
+    }
+
+    main {
+      padding: 60px 20px 80px;
+      max-width: 1400px;
+      margin: auto;
+    }
+
+    .status-title {
+      text-align: center;
+      font-size: 2.5rem;
+      font-weight: 600;
+      color: #001c54;
+      margin-bottom: 50px;
+      font-family: 'Georgia', serif;
+    }
+
+    .status-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 40px;
+      justify-content: center;
+      align-items: stretch;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .status-card {
+      background-color: white;
+      border: 1px solid #dee2e6;
+      border-radius: 16px;
+      padding: 35px;
+      width: 520px;
+      height: 270px;
+      display: flex;
+      gap: 30px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      overflow: hidden;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeUp 0.5s ease forwards;
+    }
+
+    .status-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 12px 24px rgba(0, 28, 84, 0.15);
+    }
+
+    @keyframes fadeUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .profile-pic {
+      width: 110px;
+      height: 130px;
+      object-fit: cover;
+      object-position: top;
+      border: 3px solid #FFD700;
+      border-radius: 4px;
+      flex-shrink: 0;
+    }
+
+    .status-info {
+      flex-grow: 1;
+    }
+
+    .lect-name {
+      font-weight: 600;
+      font-size: 20px;
+      color: #001c54;
+      margin-bottom: 5px;
+      font-family: 'Georgia', serif;
+    }
+
+    .status-info p {
+      font-size: 15px;
+      margin: 5px 0;
+    }
+
+    .status-info strong {
+      font-weight: 600;
+    }
+
+    .status-icon {
+      margin-left: auto;
+      align-self: center;
+    }
+
+    .status-icon i {
+      font-size: 28px;
+    }
+
+    .status-pending {
+      color: #999999;
+    }
+
+    .status-accepted {
+      color: #28a745;
+    }
+
+    .status-rejected {
+      color: #dc3545;
+    }
+
+    .progress-bar {
+      height: 5px;
+      width: 100%;
+      background: linear-gradient(90deg, #FFD700 25%, #fff59d 50%, #FFD700 75%);
+      background-size: 200% 100%;
+      animation: progressMove 2s linear infinite;
+      border-radius: 4px;
+      margin-top: 10px;
+    }
+
+    @keyframes progressMove {
+      from { background-position: 200% 0; }
+      to { background-position: -200% 0; }
+    }
+
+    @media (max-width: 768px) {
+      .status-card {
+        width: 100%;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        height: auto;
+      }
+
+      .status-icon {
+        margin-top: 10px;
+      }
+
+      .profile-pic {
+        margin-bottom: 10px;
+      }
+
+      .lect-name {
+        font-size: 18px;
+      }
+
+      .status-info p {
+        font-size: 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="logo-section">
+      <img src="{% static 'logoukm.png' %}" alt="UKM Logo" class="logo-img" />
+      <div class="logo-text">SvFinder</div>
+    </div>
+    <div class="nav-links">
+      <a href="{% url 'mainstudent' %}"><i class="fas fa-home"></i> Home</a>
+    </div>
+  </nav>
+
+  <main>
+    <h1 class="status-title">Application Status</h1>
+
+    <div class="status-container">
+      {% for application in permohonan_list %}
+        {% with application.latest_status as current_status %}
+          <div class="status-card">
+            <img class="profile-pic" src="{{ application.id_penyelia.gambar_penyelia.url }}" alt="Supervisor Image">
+            <div class="status-info">
+              <p class="lect-name">{{ application.id_penyelia.nama_penyelia }}</p>
+              <p><strong>Request Date:</strong> {{ application.tarikh_permohonan }}</p>
+              <p><strong>Status:</strong>
+                {% if current_status.status == "Accepted" %}
+                  <span class="status-accepted">Approved</span>
+                {% elif current_status.status == "Rejected" %}
+                  <span class="status-rejected">Rejected</span>
+                {% else %}
+                  <span class="status-pending">Pending</span>
+                {% endif %}
+              </p>
+              <p><strong>Remarks:</strong> {{ current_status.ulasan|default:"No remarks" }}</p>
+              <p><strong>Last Updated:</strong> {{ current_status.tarikh_kemaskini_status|default:"-" }}</p>
+
+              {% if current_status.status == "Pending" %}
+                <div class="progress-bar"></div>
+              {% endif %}
+            </div>
+            <div class="status-icon" title="{{ current_status.status }}">
+              {% if current_status.status == "Pending" %}
+                <i class="fa-regular fa-clock status-pending"></i>
+              {% elif current_status.status == "Accepted" %}
+                <i class="fa-solid fa-check status-accepted"></i>
+              {% elif current_status.status == "Rejected" %}
+                <i class="fa-solid fa-xmark status-rejected"></i>
+              {% endif %}
+            </div>
+          </div>
+        {% endwith %}
+      {% empty %}
+        <p style="text-align: center; font-size: 16px; width: 100%;">No applications found.</p>
+      {% endfor %}
+    </div>
+  </main>
+
+</body>
+</html>

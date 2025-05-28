@@ -1,0 +1,161 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Status | SvFinder</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: #f8f9fa;
+            color: #212529;
+            overflow-x: hidden;
+        }
+
+        /* ===== NAVIGATION BAR ===== */
+        nav {
+            background-color: #001c54;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 40px;
+            height: 75px;
+            box-shadow: 0 3px 5px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-img {
+            height: 38px;
+        }
+
+        .logo-text {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #FFD700;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .nav-links a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 14px;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: #FFD700;
+        }
+
+        .signup-btn {
+            background-color: #FFD700;
+            color: #000;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 14px;
+            text-decoration: none;
+        }
+
+        /* ===== STATUS CONTAINER ===== */
+        .container {
+            max-width: 600px;
+            margin: 120px auto;
+            text-align: center;
+            padding: 40px 30px;
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .container h1 {
+            font-size: 30px;
+            color: #002147;
+        }
+
+        .container p {
+            font-size: 17px;
+            color: #555;
+            margin-top: 12px;
+        }
+
+        .back-home {
+            margin-top: 30px;
+            display: inline-block;
+            background-color: #ffca3a;
+            color: #212529;
+            padding: 12px 28px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 30px;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
+
+        .back-home:hover {
+            background-color: #ffd75d;
+        }
+
+        @media (max-width: 900px) {
+            .nav-links {
+                gap: 1rem;
+            }
+
+            .logo-text {
+                font-size: 1.1rem;
+            }
+
+            nav {
+                padding: 10px 20px;
+            }
+
+            .container {
+                margin: 100px 20px;
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Navigation -->
+<nav>
+  <div class="logo-section">
+    <img src="{% static 'logoukm.png' %}" alt="UKM Logo" class="logo-img" />
+    <div class="logo-text">SvFinder</div>
+  </div>
+  
+</nav>
+
+<!-- Status Message -->
+<div class="container">
+    <h1>Request Submitted Successfully!</h1>
+    <p>Your supervisor request has been successfully submitted. Please wait for further updates from the faculty.</p>
+    <a href="{% url 'mainstudent' %}" class="back-home">Back to Home</a>
+</div>
+
+</body>
+</html>

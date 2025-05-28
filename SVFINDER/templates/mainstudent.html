@@ -1,0 +1,427 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Main Student | SvFinder</title>
+  <link rel="icon" href="{% static 'logoukm.png' %}" type="image/png">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@500;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary-color: #002147;
+      --accent-color: #ffc107;
+      --bg-color: #f8f9fa;
+      --text-color: #333;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      background: linear-gradient(to right, #f0f4ff, #e5ecff);
+      color: #1e1e1e;
+      overflow-x: hidden;
+    }
+
+    nav {
+      background-color: #002147;
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 40px;
+      height: 75px;
+      box-shadow: 0 3px 5px rgba(0,0,0,0.1);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    nav .logo {
+      display: flex;
+      align-items: center;
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: #FFD700;
+    }
+
+    nav .logo img {
+      height: 38px;
+      margin-right: 10px;
+    }
+
+    nav .welcome-container {
+      position: relative;
+    }
+
+    nav .welcome-message {
+      font-size: 13px;
+      background: rgba(255, 193, 7, 0.15);
+      color: var(--accent-color);
+      padding: 6px 12px;
+      border-radius: 20px;
+      cursor: pointer;
+    }
+
+    nav .dropdown-menu {
+  display: none;
+  position: absolute;
+  right: 0;
+  top: 50px;
+  min-width: 180px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 6px 12px rgba(0, 28, 84, 0.2);
+  border: 1px solid #dfe3e8;
+  z-index: 1000;
+  animation: fadeIn 0.25s ease-in-out;
+}
+
+nav .dropdown-menu::before {
+  content: "";
+  position: absolute;
+  top: -10px;
+  right: 16px;
+  border-width: 0 8px 10px 8px;
+  border-style: solid;
+  border-color: transparent transparent #ffffff transparent;
+  z-index: 1001;
+}
+
+nav .dropdown-menu a {
+  display: block;
+  padding: 12px 18px;
+  color: #001c54;
+  text-decoration: none;
+  font-size: 14px;
+  transition: background 0.25s ease, color 0.25s ease;
+}
+
+nav .dropdown-menu a:hover {
+  background-color: #f8f9fa;
+  color: #d49200;
+}
+
+
+    .hero {
+      background: url("{% static 'ftsm3.jpg' %}") center/cover no-repeat;
+      padding: 100px 20px 50px;
+      text-align: center;
+      color: white;
+      background-blend-mode: overlay;
+      background-color: rgba(0, 0, 0, 0.4);
+    }
+
+    .hero h1 {
+      font-size: 38px;
+      font-family: 'Roboto Slab', serif;
+      margin-bottom: 20px;
+      background-color: rgba(0, 0, 0, 0.3);
+      display: inline-block;
+      padding: 10px 24px;
+      border-radius: 10px;
+    }
+
+    .hero h1 span {
+      color: var(--accent-color);
+    }
+
+    .search-bar {
+      margin-top: 25px;
+    }
+
+    .search-bar input {
+      width: 90%;
+      max-width: 400px;
+      padding: 12px 18px;
+      font-size: 14px;
+      border: 1px solid #bbb;
+      border-radius: 30px;
+      outline: none;
+      color: #333;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+      transition: border 0.3s ease;
+    }
+
+    .filters {
+      text-align: center;
+      margin: 30px 0 10px;
+    }
+
+    .filters button {
+      padding: 10px 22px;
+      border: 1px solid var(--primary-color);
+      background: white;
+      color: var(--primary-color);
+      margin: 6px;
+      border-radius: 20px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .filters button.active,
+    .filters button:hover {
+      background-color: var(--primary-color);
+      color: white;
+    }
+
+    .sort-dropdown {
+      text-align: right;
+      margin: 10px 30px;
+    }
+
+    .sort-dropdown select {
+      padding: 8px 14px;
+      font-size: 14px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+
+    #supervisorCount {
+      font-size: 14px;
+      font-weight: 600;
+      margin: 10px 30px 30px;
+      color: var(--primary-color);
+      text-align: right;
+    }
+
+    .supervisor-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 24px;
+      padding: 0 30px 50px;
+    }
+
+    .supervisor-card {
+      background: white;
+      border: 1px solid #ddd;
+      border-radius: 12px;
+      text-align: center;
+      padding: 20px;
+      transition: box-shadow 0.3s, transform 0.3s;
+    }
+
+    .supervisor-card:hover {
+      box-shadow: 0 8px 18px rgba(0,0,0,0.1);
+      transform: translateY(-5px);
+    }
+
+    .supervisor-card img {
+      width: 100%;
+      height: 360px;
+      object-fit: cover;
+      border-radius: 10px;
+      margin-bottom: 12px;
+    }
+
+    .supervisor-card .name {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    .supervisor-card .more-btn {
+      margin-top: 10px;
+      display: inline-block;
+      padding: 8px 16px;
+      font-size: 13px;
+      background: var(--accent-color);
+      color: #000;
+      border-radius: 20px;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .no-results {
+      display: none;
+      text-align: center;
+      font-weight: bold;
+      color: var(--primary-color);
+      font-size: 16px;
+      margin-top: 20px;
+    }
+
+    .supervisor-card[data-category="Senior Lecturer"] { border-top: 4px solid #007bff; }
+    .supervisor-card[data-category="Lecturer"] { border-top: 4px solid #28a745; }
+    .supervisor-card[data-category="IT Instructor"] { border-top: 4px solid #fd7e14; }
+
+    @keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+    @media (max-width: 1200px) {
+      .supervisor-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .supervisor-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 480px) {
+      .supervisor-grid {
+        grid-template-columns: 1fr;
+      }
+
+      nav {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+      }
+
+      .sort-dropdown, #supervisorCount {
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<nav>
+  <div class="logo">
+    <img src="{% static 'logoukm.png' %}" alt="UKM Logo" />
+    SvFinder
+  </div>
+
+  <div class="welcome-container" id="welcomeDropdown" tabindex="0">
+    <div class="welcome-message" onclick="toggleDropdown()">
+      {{ welcome_message }} ▼
+    </div>
+    <div class="dropdown-menu" id="dropdownMenu">
+      <a href="{% url 'statuspermohonan' %}">Inbox</a>
+      <a href="{% url 'profilestudent' %}">Profile</a>
+      <a href="{% url 'index' %}">Logout</a>
+    </div>
+  </div>
+</nav>
+
+<div class="hero">
+  <h1>List of <span>Supervisors</span></h1>
+  <div class="search-bar">
+    <input type="text" id="searchInput" placeholder="Search your supervisor by name" onkeyup="filterSupervisorsByName()">
+  </div>
+</div>
+
+<div class="filters">
+  <button class="active" onclick="filterSupervisors('')">ALL</button>
+  <button onclick="filterSupervisors('Senior Lecturer')">SENIOR LECTURER</button>
+  <button onclick="filterSupervisors('Lecturer')">LECTURER</button>
+  <button onclick="filterSupervisors('IT Instructor')">IT INSTRUCTOR</button>
+</div>
+
+<div class="sort-dropdown">
+  <select id="sortDropdown" onchange="sortSupervisor()">
+    <option value="">Sort by</option>
+    <option value="az">Name A–Z</option>
+    <option value="za">Name Z–A</option>
+  </select>
+</div>
+
+<p id="supervisorCount">{{ signupervisor|length }} supervisor found</p>
+
+<div class="supervisor-grid" id="supervisorGrid">
+  {% for supervisor in signupervisor %}
+  <div class="supervisor-card" data-category="{{ supervisor.category_penyelia }}">
+    {% if supervisor.gambar_penyelia %}
+      <img src="{{ supervisor.gambar_penyelia.url }}" alt="{{ supervisor.nama_penyelia }}">
+    {% else %}
+      <img src="{% static 'default-avatar.png' %}" alt="Default Supervisor">
+    {% endif %}
+    <div class="name">{{ supervisor.nama_penyelia }}</div>
+    <div>{{ supervisor.category_penyelia }}</div>
+    <a href="{% url 'informationsv' supervisor.id_penyelia %}" class="more-btn">More</a>
+  </div>
+  {% endfor %}
+</div>
+
+<p class="no-results" id="noResults">No supervisor found.</p>
+
+<script>
+  function toggleDropdown() {
+    const dropdown = document.getElementById("dropdownMenu");
+    dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+  }
+
+  window.onclick = function(event) {
+    if (!event.target.matches('.welcome-message')) {
+      document.getElementById("dropdownMenu").style.display = "none";
+    }
+  }
+
+  function filterSupervisors(category) {
+    const cards = document.querySelectorAll(".supervisor-card");
+    const buttons = document.querySelectorAll(".filters button");
+    const noResults = document.getElementById("noResults");
+    let visibleCount = 0;
+
+    buttons.forEach(btn => btn.classList.remove("active"));
+    event.target.classList.add("active");
+
+    cards.forEach(card => {
+      if (category === "" || card.dataset.category === category) {
+        card.style.display = "block";
+        visibleCount++;
+      } else {
+        card.style.display = "none";
+      }
+    });
+
+    noResults.style.display = visibleCount === 0 ? "block" : "none";
+    document.getElementById("supervisorCount").textContent = `${visibleCount} supervisor found`;
+  }
+
+  function filterSupervisorsByName() {
+    const input = document.getElementById("searchInput").value.toLowerCase();
+    const cards = document.querySelectorAll(".supervisor-card");
+    const noResults = document.getElementById("noResults");
+    let visibleCount = 0;
+
+    cards.forEach(card => {
+      const name = card.querySelector(".name").textContent.toLowerCase();
+      if (name.includes(input)) {
+        card.style.display = "block";
+        visibleCount++;
+      } else {
+        card.style.display = "none";
+      }
+    });
+
+    noResults.style.display = visibleCount === 0 ? "block" : "none";
+    document.getElementById("supervisorCount").textContent = `${visibleCount} supervisor found`;
+  }
+
+  function sortSupervisor() {
+    const select = document.getElementById("sortDropdown").value;
+    const grid = document.getElementById("supervisorGrid");
+    const cards = Array.from(grid.getElementsByClassName("supervisor-card"));
+
+    cards.sort((a, b) => {
+      const nameA = a.querySelector(".name").textContent.toLowerCase();
+      const nameB = b.querySelector(".name").textContent.toLowerCase();
+      return select === "az" ? nameA.localeCompare(nameB) : nameB.localeCompare(nameA);
+    });
+
+    grid.innerHTML = "";
+    cards.forEach(card => grid.appendChild(card));
+  }
+</script>
+
+</body>
+</html>

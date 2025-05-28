@@ -1,0 +1,270 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Student Profile | SvFinder UKM</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"/>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      background: linear-gradient(to right, #f0f4ff, #e5ecff);
+      color: #333;
+      min-height: 100vh;
+    }
+
+    nav {
+      background-color: #001c54;
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 40px;
+      height: 60px;
+      box-shadow: 0 3px 5px rgba(0,0,0,0.1);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      height: 75px;
+      
+    }
+
+    .logo-section {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo-img {
+       height: 38px;
+    }
+
+    .logo {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: #FFD700;
+    }
+
+    .nav-links a {
+        color: #fff;
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 14px;
+      transition: color 0.3s ease;
+    }
+
+    .nav-links a:hover {
+      color: #ffd700;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 2.5rem auto;
+      padding: 1.5rem;
+      background-color: white;
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
+    }
+
+    .profile-header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .profile-header h1 {
+      font-size: 2.2rem;
+      color: #0d1a4d;
+      font-weight: 700;
+    }
+
+    .profile-header span {
+      color: #ffd700;
+    }
+
+    .profile-wrapper {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+      align-items: flex-start;
+      justify-content: center;
+    }
+
+    .profile-pic {
+      width: 260px;
+      height: 260px;
+      border-radius: 50%;
+      object-fit: cover;
+      background-color: #fff;
+      padding: 6px;
+      border: 2px solid #ccc;
+      box-shadow: 0 0 12px rgba(0, 0, 0, 0.05);
+    }
+
+    form {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      max-width: 600px;
+    }
+
+    label {
+      font-weight: 600;
+      margin-top: 1.2rem;
+      margin-bottom: 5px;
+      color: #0d1a4d;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="password"],
+    input[type="file"] {
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 1rem;
+      background-color: #f9f9f9;
+      transition: border-color 0.3s;
+    }
+
+    input:focus {
+      border-color: #0d1a4d;
+      outline: none;
+    }
+
+    input.readonly {
+      background-color: #e9ecef;
+      cursor: not-allowed;
+    }
+
+    button {
+      margin-top: 1.8rem;
+      background-color: #ffd700;
+      color: #0d1a4d;
+      font-weight: 600;
+      padding: 12px 28px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      align-self: flex-start;
+    }
+
+    button:hover {
+      background-color: #e6c200;
+    }
+
+    .message {
+      background-color: #d4edda;
+      color: #155724;
+      padding: 12px;
+      margin-top: 10px;
+      border-radius: 4px;
+      border: 1px solid #c3e6cb;
+    }
+
+    @media (max-width: 768px) {
+      .profile-wrapper {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .profile-pic {
+        width: 200px;
+        height: 200px;
+      }
+
+      form {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav>
+  <div class="logo-section">
+    <img src="{% static 'logoukm.png' %}" alt="UKM Logo" class="logo-img" />
+    <div class="logo">SvFinder</div>
+  </div>
+  <div class="nav-links">
+    <a href="{% url 'mainstudent' %}"><i class="fas fa-home"></i> Home</a>
+  </div>
+</nav>
+
+<!-- Profile Container -->
+<div class="container">
+  <div class="profile-header">
+    <h1>My <span>Profile</span></h1>
+  </div>
+
+  <div class="profile-wrapper">
+    <!-- Profile Picture -->
+    <img src="{% if pelajar.gambar_pelajar %}{{ pelajar.gambar_pelajar.url }}{% else %}{% static 'default.jpg' %}{% endif %}" 
+         alt="Student Picture" class="profile-pic" id="preview">
+
+    <!-- Profile Form -->
+    <form id="updateForm" action="{% url 'update_profile' %}" method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+
+      {% if messages %}
+        {% for message in messages %}
+          <div class="message">{{ message }}</div>
+        {% endfor %}
+      {% endif %}
+
+      <label for="gambar_pelajar">Update Picture:</label>
+      <input type="file" name="gambar_pelajar" id="gambar_pelajar" accept="image/*" onchange="previewImage(event)">
+
+      <label>Student ID:</label>
+      <input type="text" name="id_pelajar" value="{{ pelajar.id_pelajar }}" class="readonly" readonly>
+
+      <label>Student Name:</label>
+      <input type="text" name="nama_pelajar" value="{{ pelajar.nama_pelajar }}" class="readonly" readonly>
+
+      <label>Student Email:</label>
+      <input type="email" name="email_pelajar" value="{{ pelajar.email_pelajar }}" class="readonly" readonly>
+
+      <label>Student Program:</label>
+      <input type="text" name="program_pelajar" value="{{ pelajar.program_pelajar }}" class="readonly" readonly>
+
+      <label>Phone Number:</label>
+      <input type="text" name="no_pelajar" value="{{ pelajar.no_pelajar }}">
+
+      <label>New Password:</label>
+      <input type="password" name="katalaluan_pelajar">
+
+      <button type="button" onclick="confirmUpdate()">Edit</button>
+    </form>
+  </div>
+</div>
+
+<!-- JS -->
+<script>
+  function confirmUpdate() {
+    if (confirm('Are you sure you want to update your profile?')) {
+      document.getElementById('updateForm').submit();
+    }
+  }
+
+  function previewImage(event) {
+    const reader = new FileReader();
+    reader.onload = function () {
+      const output = document.getElementById('preview');
+      output.src = reader.result;
+    };
+    reader.readAsDataURL(event.target.files[0]);
+  }
+</script>
+
+</body>
+</html>

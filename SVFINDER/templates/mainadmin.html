@@ -1,0 +1,130 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Dashboard | SvFinder</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"/>
+
+  <style>
+     :root {
+      --primary-color: #002147;
+      --accent-color: #ffc107;
+      --bg-color: #f8f9fa;
+      --text-color: #333;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      background: linear-gradient(to right, #f0f4ff, #e5ecff);
+      color: #1e1e1e;
+      overflow-x: hidden;
+    }
+
+     nav {
+      background-color: #002147;
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 40px;
+      height: 75px;
+      box-shadow: 0 3px 5px rgba(0,0,0,0.1);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    .logo {
+     display: flex;
+      align-items: center;
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: #FFD700;
+    }
+
+    .logo img {
+      height: 38px;
+      margin-right: 10px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 30px;
+    }
+
+    .nav-links a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 16px;
+      transition: color 0.3s ease;
+    }
+
+    .nav-links a:hover {
+      color: #fcd94c;
+    }
+
+    .dashboard-content {
+      max-width: 1000px;
+      margin: 60px auto;
+      text-align: center;
+    }
+
+    .dashboard-content h1 {
+      font-size: 32px;
+      margin-bottom: 20px;
+      color: #1a093f;
+    }
+
+    .dashboard-content p {
+      font-size: 18px;
+      color: #555;
+    }
+
+    @media (max-width: 768px) {
+      nav {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .nav-links {
+        flex-direction: column;
+        gap: 15px;
+        margin-top: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+   <div class="logo">
+    <img src="{% static 'logoukm.png' %}" alt="UKM Logo" />
+    SvFinder
+  </div>
+  
+  <div class="nav-links">
+    <a href="{% url 'studentlist' %}"><i class="fas fa-users"></i> List of Students</a>
+    <a href="{% url 'supervisorlist' %}"><i class="fas fa-chalkboard-teacher"></i> List of Supervisors</a>
+    <a href="{% url 'viewpermohonan' %}"><i class="fas fa-file-alt"></i> Report</a>
+    <a href="{% url 'index' %}"><i class="fas fa-sign-out-alt"></i> Logout</a>
+</div>
+  </div>
+</nav>
+
+<div class="dashboard-content">
+  <h1>Welcome, Admin!</h1>
+  <p>Use the navigation above to manage student and supervisor records.</p>
+</div>
+
+</body>
+</html>

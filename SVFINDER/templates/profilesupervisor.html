@@ -1,0 +1,264 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Supervisor Profile</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+  
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      background-color: #120138;
+      color: white;
+      line-height: 1.6;
+      position: relative;
+      min-height: 100vh;
+    }
+
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 50px;
+      background-color: #120138;
+    }
+
+    .logo-section {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo-img {
+      height: 40px;
+      width: auto;
+    }
+
+    .logo {
+      font-weight: 700;
+      font-size: 1.4rem;
+      color: #ffffff;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+    }
+
+    .nav-links a {
+      color: white;
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.2s ease;
+    }
+
+    .nav-links a:hover {
+      color: #FFD700;
+    }
+
+    .signup-btn {
+      background-color: #FFD700;
+      color: black;
+      padding: 0.5rem 1.2rem;
+      border-radius: 30px;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 50px auto;
+      display: flex;
+      align-items: flex-start;
+      gap: 50px;
+      padding: 0 50px;
+      position: relative;
+    }
+
+    .profile-pic {
+      width: 300px;
+      height: 300px;
+      object-fit: cover;
+      border-radius: 50%;
+      background-color: white;
+      padding: 10px;
+    }
+
+    form {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    h2 {
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+      font-weight: 700;
+      color: white;
+    }
+
+    label {
+      font-weight: 600;
+      margin-top: 15px;
+      margin-bottom: 5px;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="password"],
+    input[type="file"],
+    select {
+      padding: 12px;
+      border-radius: 8px;
+      border: none;
+      width: 100%;
+      margin-bottom: 10px;
+      background-color: white;
+      color: black;
+    }
+
+    input.readonly, select.readonly {
+      background-color: #fff;
+    }
+
+    button {
+      width: 120px;
+      background-color: #FFD700;
+      color: black;
+      font-weight: bold;
+      padding: 12px;
+      margin-top: 20px;
+      border: none;
+      border-radius: 25px;
+      cursor: pointer;
+      align-self: flex-end;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #e6c200;
+    }
+
+    .message {
+      background-color: #d4edda;
+      color: #155724;
+      padding: 10px;
+      margin-top: 10px;
+      border-radius: 5px;
+      text-align: center;
+    }
+
+    .profile-title {
+      position: absolute;
+      top: -40px;
+      left: 50px;
+      font-size: 2.8rem;
+      font-weight: 700;
+      color: white;
+    }
+
+    .profile-title span {
+      color: #FFD700;
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- Navigation -->
+<nav>
+  <div class="logo-section">
+    <img src="{% static 'logoukm.png' %}" alt="UKM Logo" class="logo-img" />
+    <div class="logo">SvFinder</div>
+  </div>
+  <div class="nav-links">
+    <a href="{% url 'about' %}">About</a>
+    <a href="#">Contact</a>
+    <a href="{% url 'signup' %}" class="signup-btn">Sign up →</a>
+  </div>
+</nav>
+
+<!-- Profile Section -->
+<div class="container">
+
+  <div class="profile-title">My <span>Profile</span></div>
+
+  <!-- Profile Picture -->
+  <img src="{% if penyelia.gambar_penyelia %}{{ penyelia.gambar_penyelia.url }}{% else %}{% static 'default.jpg' %}{% endif %}" 
+       alt="Supervisor Picture" class="profile-pic" id="preview">
+
+  <form id="updateForm" action="{% url 'update_profilesupervisor' %}" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    {% if messages %}
+      {% for message in messages %}
+        <div class="message">{{ message }}</div>
+      {% endfor %}
+    {% endif %}
+
+    <label for="gambar_penyelia">Update Picture:</label>
+    <input type="file" name="gambar_penyelia" id="gambar_penyelia" accept="image/*" onchange="previewImage(event)">
+
+    <label>Supervisor ID:</label>
+    <input type="text" name="id_penyelia" value="{{ penyelia.id_penyelia }}" class="readonly" readonly>
+
+    <label>Supervisor Name:</label>
+    <input type="text" name="nama_penyelia" value="{{ penyelia.nama_penyelia }}" class="readonly" readonly>
+
+    <label>Supervisor Email:</label>
+    <input type="email" name="email_penyelia" value="{{ penyelia.email_penyelia }}" class="readonly" readonly>
+
+    <label>Category:</label>
+    <select name="category_penyelia" class="readonly">
+      <option value="Senior Lecturer" {% if penyelia.category_penyelia == "Senior Lecturer" %}selected{% endif %}>Senior Lecturer</option>
+      <option value="Lecturer" {% if penyelia.category_penyelia == "Lecturer" %}selected{% endif %}>Lecturer</option>
+      <option value="IT Instructor" {% if penyelia.category_penyelia == "IT Instructor" %}selected{% endif %}>IT Instructor</option>
+    </select>
+
+    <label>Phone Number:</label>
+    <input type="text" name="no_penyelia" value="{{ penyelia.no_penyelia }}">
+
+    <label>Room:</label>
+    <input type="text" name="bilik_penyelia" value="{{ penyelia.bilik_penyelia }}">
+
+    <label>Bio:</label>
+    <input type="text" name="bio_penyelia" value="{{ penyelia.bio_penyelia}}">
+
+    <label>New Password:</label>
+    <input type="password" name="katalaluan_penyelia">
+
+    <button type="button" onclick="confirmUpdate()">Edit</button>
+  </form>
+
+</div>
+
+<!-- Script -->
+<script>
+  function confirmUpdate() {
+    if (confirm('Are you sure you want to update your profile?')) {
+      document.getElementById('updateForm').submit();
+    }
+  }
+
+  function previewImage(event) {
+    const reader = new FileReader();
+    reader.onload = function(){
+      const output = document.getElementById('preview');
+      output.src = reader.result;
+    };
+    reader.readAsDataURL(event.target.files[0]);
+  }
+</script>
+
+</body>
+</html>
