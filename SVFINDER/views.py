@@ -297,7 +297,7 @@ def logoutstudent(request):
     return redirect('index')
 
 def mainstudent(request):
-    # Get the logged-in student's ID from session
+    
     id_pelajar = request.session.get('student', None)
     
     nama_pelajar = None
@@ -305,16 +305,16 @@ def mainstudent(request):
         try:
             pelajar = Pelajar.objects.get(id_pelajar=id_pelajar)
             nama_pelajar = pelajar.nama_pelajar
-            welcome_message = f"Welcome, {nama_pelajar}"
+            welcome_message = f"HELLO, {nama_pelajar}"
         except Pelajar.DoesNotExist:
-            welcome_message = "Welcome, Unknown Student"
+            welcome_message = "HELLO, Unknown Student"
     else:
-        welcome_message = "Welcome, Guest"
+        welcome_message = "HELLO, Guest"
 
-    # Query the database to get all signed-up supervisors
+    
     signupervisor = Penyelia.objects.all()
 
-    # Render the template
+  
     return render(request, 'mainstudent.html', {
         'id_pelajar': id_pelajar,
         'nama_pelajar': nama_pelajar,
@@ -526,10 +526,9 @@ def requestform(request, id_penyelia):
 
     tarikh_permohonan = now().date()
     id_permohonan = f"P{id_pelajar_id}"
-
     error_message = None
 
-    # ✅ Check 1: Student already has an accepted supervisor
+    # Check if student already has an accepted supervisor
     accepted_exists = Permohonan.objects.filter(
         id_pelajar=pelajar,
         status='Accepted'
@@ -539,15 +538,16 @@ def requestform(request, id_penyelia):
         error_message = "You can't make a new request because you already have a supervisor assigned."
 
     else:
-        # ✅ Check 2: Wait 3 days between requests
+        # Check if student needs to wait 3 days after last request
         last_request = Permohonan.objects.filter(id_pelajar=pelajar).order_by('-tarikh_permohonan').first()
         if last_request:
             days_since_last = (tarikh_permohonan - last_request.tarikh_permohonan).days
             if days_since_last < 3:
-                wait_days = 3 - days_since_last
-                error_message = f"You can only submit a new application after {wait_days} day(s). Please wait before submitting again."
+                next_allowed = last_request.tarikh_permohonan + timedelta(days=3)
+                error_message = (
+                    f"You can only submit a new application after {next_allowed.strftime('%d %B %Y')}."
+                )
 
-    # ✅ POST Handling (with double-check)
     if request.method == 'POST':
         if accepted_exists:
             error_message = "Submission blocked: You already have a supervisor assigned."
@@ -608,12 +608,13 @@ def statuspermohonan(request):
             print(f"[DEBUG] Request Date: {permohonan.tarikh_permohonan}")
             print(f"[DEBUG] Age: {age.days} days")
 
-            if latest_status.status == "Pending" and age > timedelta(days=3):
+            if latest_status.status == "pending" and age > timedelta(days=3):
                 # Update status to Rejected due to timeout
                 latest_status.status = "Rejected"
                 latest_status.ulasan = "Auto rejected after 3 days without response."
                 latest_status.tarikh_kemaskini_status = now
                 latest_status.save()
+                print(f"[DEBUG] Status updated to {latest_status.status} for permohonan {permohonan.id_permohonan}")
 
         # Attach latest_status for template usage
         permohonan.latest_status = latest_status
@@ -622,6 +623,7 @@ def statuspermohonan(request):
         'permohonan_list': permohonan_list,
         'pelajar': pelajar
     })
+
 def statusdetails(request, id_permohonan):
     # Get the permohonan instance using id_permohonan
     permohonan = get_object_or_404(Permohonan, id=id_permohonan)
@@ -650,16 +652,17 @@ def student_detail(request, id):
 
 def result_view(request, id_permohonan):
     permohonan = get_object_or_404(Permohonan, id_permohonan=id_permohonan)
+    id_status = f"S {permohonan.id_pelajar_id}"
 
-    # Check if a Status entry already exists for this permohonan
-    status_exists = Status.objects.filter(id_permohonan=permohonan).exists()
+    # Try to get or auto-create rejected status if overdue
+    status_instance = Status.objects.filter(id_status=id_status).first()
 
-    # If not exists and more than 3 days passed, auto-reject
-    if not status_exists:
+    if not status_instance:
         days_passed = (date.today() - permohonan.tarikh_permohonan).days
         if days_passed > 3:
-            Status.objects.create(
-                id_status=f"S {permohonan.id_pelajar_id}",  # or any other ID format
+            # Auto-reject and create status
+            status_instance = Status.objects.create(
+                id_status=id_status,
                 id_permohonan=permohonan,
                 status="Rejected",
                 ulasan="Automatically rejected after 3 days without action.",
@@ -667,21 +670,27 @@ def result_view(request, id_permohonan):
             )
 
     if request.method == "POST":
-        id_status = request.POST.get("id_status")
         status_value = request.POST.get("status")
         ulasan = request.POST.get("ulasan")
         tarikh_kemaskini_status = date.today()
 
-        # Save the submitted status
-        Status.objects.create(
-            id_status=id_status,
-            id_permohonan=permohonan,
-            status=status_value,
-            ulasan=ulasan,
-            tarikh_kemaskini_status=tarikh_kemaskini_status
-        )
+        if status_instance:
+            # Update existing status
+            status_instance.status = status_value
+            status_instance.ulasan = ulasan
+            status_instance.tarikh_kemaskini_status = tarikh_kemaskini_status
+            status_instance.save()
+        else:
+            # Create a new one if not found
+            Status.objects.create(
+                id_status=id_status,
+                id_permohonan=permohonan,
+                status=status_value,
+                ulasan=ulasan,
+                tarikh_kemaskini_status=tarikh_kemaskini_status
+            )
 
-        return redirect('result_success')  # Redirect to success page
+        return redirect('result_success')
 
     context = {
         "permohonan": permohonan,

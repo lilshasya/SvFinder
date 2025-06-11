@@ -219,9 +219,15 @@
     </table>
 
     <div class="summary">
-      <div>Total Applications: {{ total_permohonan }}</div>
-      <div>Accepted: {{ count_accepted }}</div>
-      <div>Rejected: {{ count_rejected }}</div>
+      {% if selected_status == "Accepted" %}
+        <div>Total Accepted: {{ count_accepted }}</div>
+      {% elif selected_status == "Rejected" %}
+        <div>Total Rejected: {{ count_rejected }}</div>
+      {% else %}
+        <div>Total Applications: {{ total_permohonan }}</div>
+        <div>Accepted: {{ count_accepted }}</div>
+        <div>Rejected: {{ count_rejected }}</div>
+      {% endif %}
     </div>
   </div>
 

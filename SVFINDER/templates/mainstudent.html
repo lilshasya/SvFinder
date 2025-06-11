@@ -42,71 +42,92 @@
       z-index: 1000;
     }
 
-    nav .logo {
+    .logo {
       display: flex;
       align-items: center;
-      font-size: 1.2rem;
       font-weight: 600;
+      font-size: 1.2rem;
       color: #FFD700;
+      font-family: 'Poppins', sans-serif;
     }
 
-    nav .logo img {
+    .logo img {
       height: 38px;
       margin-right: 10px;
     }
 
-    nav .welcome-container {
-      position: relative;
+    /* Removed nav-center */
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;  /* space between welcome and hamburger */
     }
 
-    nav .welcome-message {
-      font-size: 13px;
-      background: rgba(255, 193, 7, 0.15);
-      color: var(--accent-color);
-      padding: 6px 12px;
-      border-radius: 20px;
+    .welcome-message {
+      font-family: 'Poppins', sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
+      color: #FFD700;
+      letter-spacing: 0.5px;
+      text-shadow: 0 0 6px rgba(255, 193, 7, 0.7);
+      animation: popIn 0.8s ease-out;
+      white-space: nowrap;
+      margin: 0;
+    }
+
+    .dropdown {
+      position: relative;
+      display: inline-block;
+    }
+
+    .hamburger {
+      background: transparent;
+      border: none;
+      width: 42px;
+      height: 42px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
       cursor: pointer;
     }
 
-    nav .dropdown-menu {
-  display: none;
-  position: absolute;
-  right: 0;
-  top: 50px;
-  min-width: 180px;
-  background-color: #ffffff;
-  border-radius: 8px;
-  box-shadow: 0 6px 12px rgba(0, 28, 84, 0.2);
-  border: 1px solid #dfe3e8;
-  z-index: 1000;
-  animation: fadeIn 0.25s ease-in-out;
-}
+    .hamburger span {
+      width: 22px;
+      height: 2px;
+      background-color: #FFD700;  /* yellow color */
+      margin: 3px 0;
+    }
 
-nav .dropdown-menu::before {
-  content: "";
-  position: absolute;
-  top: -10px;
-  right: 16px;
-  border-width: 0 8px 10px 8px;
-  border-style: solid;
-  border-color: transparent transparent #ffffff transparent;
-  z-index: 1001;
-}
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: white;
+      min-width: 160px;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+      z-index: 1;
+      right: 0;
+      border-radius: 8px;
+      overflow: hidden;
+    }
 
-nav .dropdown-menu a {
-  display: block;
-  padding: 12px 18px;
-  color: #001c54;
-  text-decoration: none;
-  font-size: 14px;
-  transition: background 0.25s ease, color 0.25s ease;
-}
+    .dropdown-content a {
+      color: var(--primary-color);
+      padding: 12px 18px;
+      text-decoration: none;
+      display: block;
+      font-size: 15px;
+      font-weight: 600;
+    }
 
-nav .dropdown-menu a:hover {
-  background-color: #f8f9fa;
-  color: #d49200;
-}
+    .dropdown-content a:hover {
+      background-color: #f1f1f1;
+    }
 
+    .dropdown.show .dropdown-content {
+      display: block;
+    }
 
     .hero {
       background: url("{% static 'ftsm3.jpg' %}") center/cover no-repeat;
@@ -145,7 +166,6 @@ nav .dropdown-menu a:hover {
       outline: none;
       color: #333;
       box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-      transition: border 0.3s ease;
     }
 
     .filters {
@@ -162,7 +182,6 @@ nav .dropdown-menu a:hover {
       border-radius: 20px;
       font-size: 14px;
       cursor: pointer;
-      transition: all 0.3s ease;
     }
 
     .filters button.active,
@@ -247,22 +266,18 @@ nav .dropdown-menu a:hover {
       margin-top: 20px;
     }
 
+    
+
     .supervisor-card[data-category="Senior Lecturer"] { border-top: 4px solid #007bff; }
     .supervisor-card[data-category="Lecturer"] { border-top: 4px solid #28a745; }
     .supervisor-card[data-category="IT Instructor"] { border-top: 4px solid #fd7e14; }
 
-    @keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
+    @keyframes popIn {
+      0% { opacity: 0; transform: scale(0.95); }
+      100% { opacity: 1; transform: scale(1); }
+    }
 
-    @media (max-width: 1200px) {
+    @media (max-width: 992px) {
       .supervisor-grid {
         grid-template-columns: repeat(3, 1fr);
       }
@@ -274,154 +289,173 @@ nav .dropdown-menu a:hover {
       }
     }
 
-    @media (max-width: 480px) {
+    @media (max-width: 576px) {
       .supervisor-grid {
         grid-template-columns: 1fr;
       }
 
       nav {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 10px;
-      }
-
-      .sort-dropdown, #supervisorCount {
-        text-align: center;
+        flex-direction: row;
+        justify-content: space-between;
       }
     }
   </style>
 </head>
-
 <body>
-
-<nav>
-  <div class="logo">
-    <img src="{% static 'logoukm.png' %}" alt="UKM Logo" />
-    SvFinder
-  </div>
-
-  <div class="welcome-container" id="welcomeDropdown" tabindex="0">
-    <div class="welcome-message" onclick="toggleDropdown()">
-      {{ welcome_message }} ▼
+  <nav>
+    <div class="nav-left">
+      <div class="logo">
+        <img src="{% static 'logoukm.png' %}" alt="Logo"> SvFinder
+      </div>
     </div>
-    <div class="dropdown-menu" id="dropdownMenu">
-      <a href="{% url 'statuspermohonan' %}">Inbox</a>
-      <a href="{% url 'profilestudent' %}">Profile</a>
-      <a href="{% url 'index' %}">Logout</a>
+
+    <div class="nav-right">
+      <div class="welcome-message">{{ welcome_message }}</div>
+      <div class="dropdown" id="dropdown">
+        <button class="hamburger" onclick="toggleDropdown()">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+        <div class="dropdown-content" id="dropdownContent">
+          <a href="{% url 'statuspermohonan' %}">Inbox</a>
+          <a href="{% url 'profilestudent' %}">Profile</a>
+          <a href="{% url 'index' %}">Logout</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <div class="hero">
+    <h1>List of <span>Supervisors</span></h1>
+    <div class="search-bar">
+      <input type="text" id="searchInput" placeholder="Search your supervisor by name" onkeyup="filterSupervisorsByName()">
     </div>
   </div>
-</nav>
 
-<div class="hero">
-  <h1>List of <span>Supervisors</span></h1>
-  <div class="search-bar">
-    <input type="text" id="searchInput" placeholder="Search your supervisor by name" onkeyup="filterSupervisorsByName()">
+  <div class="filters">
+    <button class="active" onclick="filterSupervisors('')">ALL</button>
+    <button onclick="filterSupervisors('Senior Lecturer')">SENIOR LECTURER</button>
+    <button onclick="filterSupervisors('Lecturer')">LECTURER</button>
+    <button onclick="filterSupervisors('IT Instructor')">IT INSTRUCTOR</button>
   </div>
-</div>
 
-<div class="filters">
-  <button class="active" onclick="filterSupervisors('')">ALL</button>
-  <button onclick="filterSupervisors('Senior Lecturer')">SENIOR LECTURER</button>
-  <button onclick="filterSupervisors('Lecturer')">LECTURER</button>
-  <button onclick="filterSupervisors('IT Instructor')">IT INSTRUCTOR</button>
-</div>
-
-<div class="sort-dropdown">
-  <select id="sortDropdown" onchange="sortSupervisor()">
-    <option value="">Sort by</option>
-    <option value="az">Name A–Z</option>
-    <option value="za">Name Z–A</option>
-  </select>
-</div>
-
-<p id="supervisorCount">{{ signupervisor|length }} supervisor found</p>
-
-<div class="supervisor-grid" id="supervisorGrid">
-  {% for supervisor in signupervisor %}
-  <div class="supervisor-card" data-category="{{ supervisor.category_penyelia }}">
-    {% if supervisor.gambar_penyelia %}
-      <img src="{{ supervisor.gambar_penyelia.url }}" alt="{{ supervisor.nama_penyelia }}">
-    {% else %}
-      <img src="{% static 'default-avatar.png' %}" alt="Default Supervisor">
-    {% endif %}
-    <div class="name">{{ supervisor.nama_penyelia }}</div>
-    <div>{{ supervisor.category_penyelia }}</div>
-    <a href="{% url 'informationsv' supervisor.id_penyelia %}" class="more-btn">More</a>
+  <div class="sort-dropdown">
+    <select id="sortDropdown" onchange="sortSupervisor()">
+      <option value="">Sort by</option>
+      <option value="az">Name A–Z</option>
+      <option value="za">Name Z–A</option>
+    </select>
   </div>
-  {% endfor %}
+
+  <p id="supervisorCount">{{ signupervisor|length }} supervisor found</p>
+
+  <div id="loadingSpinner" style="display:none; text-align:center; margin: 20px 0;">
+  <div class="spinner"></div>
 </div>
 
-<p class="no-results" id="noResults">No supervisor found.</p>
+  <div class="supervisor-grid" id="supervisorGrid">
+    {% for supervisor in signupervisor %}
+    <div class="supervisor-card" data-category="{{ supervisor.category_penyelia }}">
+      {% if supervisor.gambar_penyelia %}
+        <img src="{{ supervisor.gambar_penyelia.url }}" alt="{{ supervisor.nama_penyelia }}">
+      {% else %}
+        <img src="{% static 'default-avatar.png' %}" alt="Default Supervisor">
+      {% endif %}
+      <div class="name">{{ supervisor.nama_penyelia }}</div>
+      <a class="more-btn" href="{% url 'informationsv' supervisor.id_penyelia %}">More info</a>
+    </div>
+    {% endfor %}
+  </div>
 
-<script>
-  function toggleDropdown() {
-    const dropdown = document.getElementById("dropdownMenu");
-    dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
-  }
+  <p class="no-results" id="noResultsMessage">No supervisors found.</p>
 
-  window.onclick = function(event) {
-    if (!event.target.matches('.welcome-message')) {
-      document.getElementById("dropdownMenu").style.display = "none";
+  <script>
+    function toggleDropdown() {
+      const dropdown = document.getElementById("dropdown");
+      dropdown.classList.toggle("show");
     }
-  }
 
-  function filterSupervisors(category) {
-    const cards = document.querySelectorAll(".supervisor-card");
-    const buttons = document.querySelectorAll(".filters button");
-    const noResults = document.getElementById("noResults");
-    let visibleCount = 0;
-
-    buttons.forEach(btn => btn.classList.remove("active"));
-    event.target.classList.add("active");
-
-    cards.forEach(card => {
-      if (category === "" || card.dataset.category === category) {
-        card.style.display = "block";
-        visibleCount++;
-      } else {
-        card.style.display = "none";
+    window.onclick = function(event) {
+      if (!event.target.matches('.hamburger') && !event.target.closest('.hamburger')) {
+        var dropdowns = document.getElementsByClassName("dropdown");
+        for (var i = 0; i < dropdowns.length; i++) {
+          dropdowns[i].classList.remove('show');
+        }
       }
+    };
+
+    function filterSupervisors(category) {
+      const cards = document.querySelectorAll('.supervisor-card');
+      let visibleCount = 0;
+
+      cards.forEach(card => {
+        const cardCategory = card.getAttribute('data-category');
+        if (category === '' || cardCategory === category) {
+          card.style.display = 'block';
+          visibleCount++;
+        } else {
+          card.style.display = 'none';
+        }
+      });
+
+      document.getElementById('supervisorCount').textContent = visibleCount + ' supervisor' + (visibleCount !== 1 ? 's' : '') + ' found';
+
+      document.getElementById('noResultsMessage').style.display = visibleCount === 0 ? 'block' : 'none';
+
+      // Clear search input when filtering by category
+      document.getElementById('searchInput').value = '';
+      // Reset sort dropdown to default
+      document.getElementById('sortDropdown').value = '';
+    }
+
+    function filterSupervisorsByName() {
+      const input = document.getElementById('searchInput').value.toLowerCase();
+      const cards = document.querySelectorAll('.supervisor-card');
+      let visibleCount = 0;
+
+      cards.forEach(card => {
+        const name = card.querySelector('.name').textContent.toLowerCase();
+        if (name.includes(input)) {
+          card.style.display = 'block';
+          visibleCount++;
+        } else {
+          card.style.display = 'none';
+        }
+      });
+
+      document.getElementById('supervisorCount').textContent = visibleCount + ' supervisor' + (visibleCount !== 1 ? 's' : '') + ' found';
+
+      document.getElementById('noResultsMessage').style.display = visibleCount === 0 ? 'block' : 'none';
+
+      // Reset filters buttons and sort dropdown when searching by name
+      document.querySelectorAll('.filters button').forEach(btn => btn.classList.remove('active'));
+      document.getElementById('sortDropdown').value = '';
+    }
+
+    function sortSupervisor() {
+      const sortValue = document.getElementById('sortDropdown').value;
+      const grid = document.getElementById('supervisorGrid');
+      const cards = Array.from(grid.children);
+
+      if (!sortValue) return;
+
+      cards.sort((a, b) => {
+        const nameA = a.querySelector('.name').textContent.toLowerCase();
+        const nameB = b.querySelector('.name').textContent.toLowerCase();
+        return sortValue === 'az' ? nameA.localeCompare(nameB) : nameB.localeCompare(nameA);
+      });
+
+      cards.forEach(card => grid.appendChild(card));
+    }
+
+    // Set active filter button
+    document.querySelectorAll('.filters button').forEach(button => {
+      button.addEventListener('click', () => {
+        document.querySelectorAll('.filters button').forEach(btn => btn.classList.remove('active'));
+        button.classList.add('active');
+      });
     });
-
-    noResults.style.display = visibleCount === 0 ? "block" : "none";
-    document.getElementById("supervisorCount").textContent = `${visibleCount} supervisor found`;
-  }
-
-  function filterSupervisorsByName() {
-    const input = document.getElementById("searchInput").value.toLowerCase();
-    const cards = document.querySelectorAll(".supervisor-card");
-    const noResults = document.getElementById("noResults");
-    let visibleCount = 0;
-
-    cards.forEach(card => {
-      const name = card.querySelector(".name").textContent.toLowerCase();
-      if (name.includes(input)) {
-        card.style.display = "block";
-        visibleCount++;
-      } else {
-        card.style.display = "none";
-      }
-    });
-
-    noResults.style.display = visibleCount === 0 ? "block" : "none";
-    document.getElementById("supervisorCount").textContent = `${visibleCount} supervisor found`;
-  }
-
-  function sortSupervisor() {
-    const select = document.getElementById("sortDropdown").value;
-    const grid = document.getElementById("supervisorGrid");
-    const cards = Array.from(grid.getElementsByClassName("supervisor-card"));
-
-    cards.sort((a, b) => {
-      const nameA = a.querySelector(".name").textContent.toLowerCase();
-      const nameB = b.querySelector(".name").textContent.toLowerCase();
-      return select === "az" ? nameA.localeCompare(nameB) : nameB.localeCompare(nameA);
-    });
-
-    grid.innerHTML = "";
-    cards.forEach(card => grid.appendChild(card));
-  }
-</script>
-
+  </script>
 </body>
 </html>

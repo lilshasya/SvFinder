@@ -2,80 +2,239 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Student Detail</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f6f6f6;
-            padding: 40px;
-        }
-        .container {
-            max-width: 600px;
-            margin: auto;
-            background: white;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-        }
-        label {
-            display: block;
-            font-weight: bold;
-            margin-top: 20px;
-        }
-        input, select, textarea {
-            width: 100%;
-            padding: 10px;
-            margin-top: 5px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-        }
-        input[readonly], textarea[readonly] {
-            background-color: #f0f0f0;
-        }
-        .button-group {
-            margin-top: 20px;
-            text-align: right;
-        }
-        .submit-btn {
-            padding: 10px 20px;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            margin-left: 10px;
-        }
-        .accept-btn {
-            background-color: #4CAF50;
-        }
-        .reject-btn {
-            background-color: #f44336;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <title>Student Detail</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --navy: #001c54;
+      --gold: #FFD700;
+      --light-bg: #f5f8ff;
+      --text-dark: #222;
+      --gray: #777;
+      --link-blue: #007bff;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      background-color: var(--light-bg);
+      color: var(--text-dark);
+      min-height: 100vh;
+    }
+
+    nav {
+  background-color: #001c54;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 40px;
+  height: 75px;
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.logo-section {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logo-img {
+  height: 38px;
+}
+
+.logo-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.1;
+}
+
+.logo-main {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #FFD700;
+}
+
+.logo-sub {
+  font-size: 0.7rem;
+  color: #ddd;
+  font-weight: 400;
+}
+
+
+    .nav-links a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 15px;
+      margin-left: 20px;
+      transition: color 0.3s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--gold);
+    }
+
+    .container {
+      max-width: 880px;
+      margin: 50px auto;
+      background: white;
+      padding: 45px;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+    }
+
+    h2 {
+      font-size: 28px;
+      color: var(--navy);
+      margin-bottom: 30px;
+    }
+
+    label {
+      display: block;
+      font-weight: 600;
+      margin-top: 20px;
+      margin-bottom: 6px;
+      color: var(--text-dark);
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 12px;
+      font-size: 15px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      background-color: #f8f9fc;
+      transition: border 0.3s ease;
+    }
+
+    input:focus, textarea:focus {
+      border-color: var(--navy);
+      outline: none;
+      background-color: #fff;
+    }
+
+    input[readonly] {
+      background-color: #f0f0f0;
+      color: #555;
+    }
+
+    a {
+      display: inline-block;
+      margin-top: 12px;
+      color: var(--link-blue);
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .button-group {
+      margin-top: 35px;
+      text-align: right;
+    }
+
+    .submit-btn {
+      padding: 12px 26px;
+      font-size: 14px;
+      font-weight: 500;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+    .accept-btn {
+      background-color: #4CAF50;
+    }
+
+    .accept-btn:hover {
+      background-color: #449d48;
+      transform: translateY(-2px);
+    }
+
+    .footer {
+      margin-top: 60px;
+      padding: 20px;
+      text-align: center;
+      font-size: 13px;
+      color: var(--gray);
+    }
+
+    @media (max-width: 768px) {
+      nav {
+        flex-direction: column;
+        height: auto;
+        padding: 20px;
+        text-align: center;
+      }
+
+      .container {
+        margin: 20px;
+        padding: 25px;
+      }
+
+      .nav-links {
+        margin-top: 10px;
+      }
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <h2>Student Application Details</h2>
 
-        <label>ID Permohonan:</label>
-        <input type="text" value="{{ permohonan.id_permohonan }}" readonly>
+  <nav>
+    <div class="logo-section">
+      <img src="{% static 'logoukm.png' %}" alt="UKM Logo" class="logo-img" />
+      <div class="logo-text">
+        <span class="logo-main">SvFinder</span>
+        <span class="logo-sub">Fakulti Teknologi dan Sains Maklumat</span>
+      </div>
+    </div>
+    <div class="nav-links">
+      <a href="{% url 'mainsupervisor' %}">Home</a>
+    </div>
+  </nav>
 
-        <label>ID Pelajar:</label>
-        <input type="text" value="{{ permohonan.id_pelajar_id }}" readonly>
+  <div class="container">
+    <h2>Student Application Details</h2>
 
-        <label>Nama Pelajar:</label>
-        <input type="text" value="{{ permohonan.id_pelajar.nama_pelajar }}" readonly>
+    <label>ID Permohonan:</label>
+    <input type="text" value="{{ permohonan.id_permohonan }}" readonly>
 
-        <label>Tarikh Permohonan:</label>
-        <input type="text" value="{{ permohonan.tarikh_permohonan }}" readonly>
+    <label>ID Pelajar:</label>
+    <input type="text" value="{{ permohonan.id_pelajar_id }}" readonly>
 
-        <label>Sinopsis:</label>
-        <a href="/media/{{ permohonan.sinopsis }}" target="_blank">View Sinopsis</a>
+    <label>Nama Pelajar:</label>
+    <input type="text" value="{{ permohonan.id_pelajar.nama_pelajar }}" readonly>
 
-         <div class="button-group">
-            <form action="{% url 'result' permohonan.id_permohonan %}" method="get">
-                <button type="submit" class="submit-btn accept-btn">Next</button>
-            </form>
-        </div>
+    <label>Tarikh Permohonan:</label>
+    <input type="text" value="{{ permohonan.tarikh_permohonan }}" readonly>
+
+    <label>Sinopsis:</label>
+    <a href="/media/{{ permohonan.sinopsis }}" target="_blank">📄 View Sinopsis</a>
+
+    <div class="button-group">
+      <form action="{% url 'result' permohonan.id_permohonan %}" method="get">
+        <button type="submit" class="submit-btn accept-btn">Next</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="footer">
+    &copy; {{ now.year }} Universiti Kebangsaan Malaysia | Fakulti Teknologi dan Sains Maklumat
+  </div>
+
 </body>
 </html>

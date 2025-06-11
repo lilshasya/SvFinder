@@ -18,15 +18,72 @@
     }
 
     * {
-      box-sizing: border-box;
       margin: 0;
       padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
     }
 
-    body {
-      font-family: 'Roboto', sans-serif;
-      background-color: var(--bg);
-      color: var(--text);
+     body {
+      background: linear-gradient(to right, #f0f4ff, #e5ecff);
+      color: #333;
+      min-height: 100vh;
+    }
+
+    nav {
+  background-color: #001c54;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 40px;
+  height: 75px;
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.logo-section {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logo-img {
+  height: 38px;
+}
+
+.logo-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.1;
+}
+
+.logo-main {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #FFD700;
+}
+
+.logo-sub {
+  font-size: 0.7rem;
+  color: #ddd;
+  font-weight: 400;
+}
+
+
+    .nav-links a {
+        color: #fff;
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 15px;
+      margin-left: 20px;
+      transition: color 0.3s ease;
+    }
+
+    .nav-links a:hover {
+      color: #ffd700;
     }
 
     .container {
@@ -114,6 +171,14 @@
       padding: 30px 0;
     }
 
+    .footer {
+      margin-top: 60px;
+      padding: 20px;
+      text-align: center;
+      font-size: 13px;
+      color: var(--gray);
+    }
+
     @media (max-width: 768px) {
       .container {
         padding: 20px;
@@ -134,6 +199,18 @@
   </style>
 </head>
 <body>
+  <nav>
+    <div class="logo-section">
+      <img src="{% static 'logoukm.png' %}" alt="UKM Logo" class="logo-img" />
+      <div class="logo-text">
+        <span class="logo-main">SvFinder</span>
+        <span class="logo-sub">Fakulti Teknologi dan Sains Maklumat</span>
+      </div>
+    </div>
+    <div class="nav-links">
+      <a href="{% url 'mainsupervisor' %}">Home</a>
+    </div>
+  </nav>
 
   <div class="container">
     <h1>Your Application List</h1>
@@ -171,6 +248,9 @@
         </tbody>
       </table>
     {% endif %}
+  </div>
+  <div class="footer">
+    &copy; {{ now.year }} Universiti Kebangsaan Malaysia | Fakulti Teknologi dan Sains Maklumat
   </div>
 
   <script>

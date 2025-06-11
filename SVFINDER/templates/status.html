@@ -16,59 +16,68 @@
         }
 
         body {
-            background-color: #f8f9fa;
+           background: linear-gradient(to right, #f0f4ff, #e5ecff);
             color: #212529;
             overflow-x: hidden;
         }
 
         /* ===== NAVIGATION BAR ===== */
-        nav {
-            background-color: #001c54;
-            color: white;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 40px;
-            height: 75px;
-            box-shadow: 0 3px 5px rgba(0,0,0,0.1);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-        }
+         nav {
+  background-color: #001c54;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 40px;
+  height: 75px;
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
 
-        .logo-section {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
+.logo-section {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
 
-        .logo-img {
-            height: 38px;
-        }
+.logo-img {
+  height: 38px;
+}
 
-        .logo-text {
-            font-size: 1.2rem;
-            font-weight: 600;
-            color: #FFD700;
-        }
+.logo-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.1;
+}
 
-        .nav-links {
-            display: flex;
-            align-items: center;
-            gap: 1.5rem;
-        }
+.logo-main {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #FFD700;
+}
 
-        .nav-links a {
-            color: #fff;
-            text-decoration: none;
-            font-weight: 500;
-            font-size: 14px;
-            transition: color 0.3s ease;
-        }
+.logo-sub {
+  font-size: 0.7rem;
+  color: #ddd;
+  font-weight: 400;
+}
 
-        .nav-links a:hover {
-            color: #FFD700;
-        }
+
+    .nav-links a {
+        color: #fff;
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 15px;
+      margin-left: 20px;
+      transition: color 0.3s ease;
+    }
+
+    .nav-links a:hover {
+      color: #ffd700;
+    }
+
 
         .signup-btn {
             background-color: #FFD700;
@@ -119,6 +128,14 @@
             background-color: #ffd75d;
         }
 
+        .footer {
+      margin-top: 60px;
+      padding: 20px;
+      text-align: center;
+      font-size: 13px;
+      color: var(--gray);
+    }
+
         @media (max-width: 900px) {
             .nav-links {
                 gap: 1rem;
@@ -143,12 +160,17 @@
 
 <!-- Navigation -->
 <nav>
-  <div class="logo-section">
-    <img src="{% static 'logoukm.png' %}" alt="UKM Logo" class="logo-img" />
-    <div class="logo-text">SvFinder</div>
-  </div>
-  
-</nav>
+    <div class="logo-section">
+      <img src="{% static 'logoukm.png' %}" alt="UKM Logo" class="logo-img" />
+      <div class="logo-text">
+        <span class="logo-main">SvFinder</span>
+        <span class="logo-sub">Fakulti Teknologi dan Sains Maklumat</span>
+      </div>
+    </div>
+    <div class="nav-links">
+      <a href="{% url 'mainsupervisor' %}">Home</a>
+    </div>
+  </nav>
 
 <!-- Status Message -->
 <div class="container">
@@ -156,6 +178,10 @@
     <p>Your supervisor request has been successfully submitted. Please wait for further updates from the faculty.</p>
     <a href="{% url 'mainstudent' %}" class="back-home">Back to Home</a>
 </div>
+
+<div class="footer">
+    &copy; {{ now.year }} Universiti Kebangsaan Malaysia | Fakulti Teknologi dan Sains Maklumat
+  </div>
 
 </body>
 </html>
