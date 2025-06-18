@@ -15,7 +15,7 @@
       font-family: 'Poppins', sans-serif;
     }
 
-    body {
+     body {
       background: linear-gradient(to right, #f0f4ff, #e5ecff);
       color: #1e1e1e;
       overflow-x: hidden;
@@ -29,7 +29,7 @@
       align-items: center;
       padding: 10px 40px;
       height: 75px;
-      box-shadow: 0 3px 5px rgba(0,0,0,0.1);
+      box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
       position: sticky;
       top: 0;
       z-index: 1000;
@@ -42,19 +42,24 @@
     }
 
     .logo-img {
-      height: 38px;
+      height: 40px;
     }
 
     .logo-text {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.1;
+    }
+
+    .logo-main {
       font-size: 1.2rem;
       font-weight: 600;
       color: #FFD700;
     }
 
-    .nav-links {
-      display: flex;
-      align-items: center;
-      gap: 1.5rem;
+    .logo-sub {
+      font-size: 0.75rem;
+      color: #ccc;
     }
 
     .nav-links a {
@@ -230,9 +235,14 @@
 <body>
 
   <nav>
-    <div class="logo-section">
-      <img src="{% static 'logoukm.png' %}" alt="UKM Logo" class="logo-img" />
-      <div class="logo-text">SvFinder</div>
+    <div class="nav-left">
+      <div class="logo-section">
+        <img src="{% static 'logoukm.png' %}" alt="UKM Logo" class="logo-img" />
+        <div class="logo-text">
+          <span class="logo-main">SvFinder</span>
+          <span class="logo-sub">Fakulti Teknologi dan Sains Maklumat</span>
+        </div>
+      </div>
     </div>
     <div class="nav-links">
       <a href="{% url 'mainstudent' %}"><i class="fas fa-home"></i> Home</a>
@@ -252,7 +262,7 @@
               <p><strong>Request Date:</strong> {{ application.tarikh_permohonan }}</p>
               <p><strong>Status:</strong>
                 {% if current_status.status == "Accepted" %}
-                  <span class="status-accepted">Approved</span>
+                  <span class="status-accepted">Accepted</span>
                 {% elif current_status.status == "Rejected" %}
                   <span class="status-rejected">Rejected</span>
                 {% else %}

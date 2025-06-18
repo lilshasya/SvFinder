@@ -5,55 +5,87 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Application List | SvFinder</title>
-
-  <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
 
   <style>
-    /* Base and Layout */
     body {
       margin: 0;
       padding: 0;
       font-family: 'Poppins', sans-serif;
-      background-color: #f4f6fb;
+      background: linear-gradient(to right, #f0f4ff, #e5ecff);
       color: #333;
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
-      min-height: 100vh;
-      padding: 40px 20px;
     }
+
+    /* NAVIGATION */
+    nav {
+  background-color: #001c54;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 40px;
+  height: 75px;
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+    .logo-section {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo-img {
+      height: 38px;
+    }
+
+    .logo-text {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: #FFD700;
+    }
+
+    .logo-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.1;
+}
+
+.logo-main {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #FFD700;
+}
+
+.logo-sub {
+  font-size: 0.7rem;
+  color: #ddd;
+  font-weight: 400;
+}
 
     .container {
-      width: 100%;
       max-width: 1100px;
-      background: #fff;
-      border-radius: 8px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      margin: 40px auto;
+      background: white;
+      border-radius: 10px;
       padding: 40px;
-      box-sizing: border-box;
-    }
-
-    /* Header */
-    header {
-      text-align: center;
-      margin-bottom: 40px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
     }
 
     header h1 {
-      margin: 0;
-      font-size: 2.5rem;
-      color: #1a093f;
+      font-size: 2rem;
       font-weight: 600;
+      color: #001c54;
+      margin-bottom: 8px;
     }
 
     header p {
-      margin-top: 8px;
-      font-size: 1.1rem;
-      color: #555;
+      font-size: 1rem;
+      color: #666;
     }
 
-    /* Filter Section */
     .filter {
       text-align: right;
       margin-bottom: 20px;
@@ -62,42 +94,36 @@
     .filter label {
       font-weight: 500;
       margin-right: 10px;
-      color: #1a093f;
     }
 
     .filter select {
       padding: 8px 12px;
       font-size: 1rem;
-      border-radius: 5px;
+      border-radius: 6px;
       border: 1px solid #ccc;
-      transition: border-color 0.3s;
     }
 
-    .filter select:focus {
-      border-color: #1a093f;
-      outline: none;
-    }
-
-    /* Table Styling */
+    /* TABLE */
     table {
       width: 100%;
       border-collapse: collapse;
-      margin-top: 10px;
-      font-size: 1rem;
+      margin-top: 15px;
+      font-size: 0.95rem;
     }
 
     thead th {
-      background-color: #1a093f;
-      color: #fff;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
+      background-color: #001c54;
+      color: white;
       padding: 14px;
+      text-align: center;
       font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
     }
 
     tbody td {
       padding: 14px;
-      border-bottom: 1px solid #ddd;
+      border-bottom: 1px solid #eee;
       text-align: center;
     }
 
@@ -107,22 +133,41 @@
 
     tbody tr:hover {
       background-color: #eef0ff;
-      cursor: default;
     }
 
-    /* Summary Section */
+    .status-badge {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-weight: 500;
+      font-size: 0.85rem;
+    }
+
+    .status-Accepted {
+      background-color: #d4edda;
+      color: #155724;
+    }
+
+    .status-Rejected {
+      background-color: #f8d7da;
+      color: #721c24;
+    }
+
+    /* SUMMARY */
     .summary {
       display: flex;
+      flex-wrap: wrap;
       justify-content: space-between;
       margin-top: 30px;
-      border-top: 2px solid #1a093f;
       padding-top: 20px;
+      border-top: 2px solid #001c54;
       font-weight: 600;
-      font-size: 1.05rem;
-      color: #1a093f;
+      font-size: 1rem;
+      color: #001c54;
+      gap: 10px;
     }
 
-    /* Responsive */
+    /* RESPONSIVE */
     @media (max-width: 768px) {
       .container {
         padding: 20px;
@@ -137,31 +182,28 @@
       }
 
       tbody tr {
-        background: #fff;
-        margin-bottom: 15px;
+        margin-bottom: 20px;
         border: 1px solid #ddd;
+        background: white;
         padding: 10px;
       }
 
       tbody td {
-        padding: 10px;
         text-align: right;
         position: relative;
-        border: none;
+        padding-left: 50%;
       }
 
       tbody td::before {
         content: attr(data-label);
         position: absolute;
-        left: 10px;
+        left: 15px;
         font-weight: 600;
-        color: #1a093f;
-        text-align: left;
+        color: #001c54;
       }
 
       .summary {
         flex-direction: column;
-        gap: 10px;
         align-items: flex-start;
       }
 
@@ -174,6 +216,16 @@
 </head>
 <body>
 
+  <nav>
+    <div class="logo-section">
+      <img src="{% static 'logoukm.png' %}" alt="UKM Logo" class="logo-img" />
+      <div class="logo-text">
+        <span class="logo-main">SvFinder</span>
+        <span class="logo-sub">Fakulti Teknologi dan Sains Maklumat</span>
+      </div>
+    </div>
+  </nav>
+
   <div class="container">
     <header>
       <h1>Universiti Kebangsaan Malaysia</h1>
@@ -182,7 +234,7 @@
 
     <div class="filter">
       <form method="get">
-        <label for="status">Application Status:</label>
+        <label for="status">Filter Status:</label>
         <select name="status" id="status" onchange="this.form.submit()">
           <option value="">-- All --</option>
           <option value="Accepted" {% if selected_status == "Accepted" %}selected{% endif %}>Accepted</option>
@@ -208,7 +260,9 @@
           <td data-label="Student Name">{{ permohonan.nama_pelajar }}</td>
           <td data-label="Supervisor ID">{{ permohonan.id_penyelia }}</td>
           <td data-label="Supervisor Name">{{ permohonan.nama_penyelia }}</td>
-          <td data-label="Status">{{ permohonan.status }}</td>
+          <td data-label="Status">
+            <span class="status-badge status-{{ permohonan.status }}">{{ permohonan.status }}</span>
+          </td>
         </tr>
         {% empty %}
         <tr>

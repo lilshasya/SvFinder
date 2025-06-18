@@ -22,7 +22,6 @@
       overflow-x: hidden;
     }
 
-    /* --- Navbar Styling --- */
     nav {
       background-color: #001c54;
       color: white;
@@ -31,7 +30,7 @@
       align-items: center;
       padding: 10px 40px;
       height: 75px;
-      box-shadow: 0 3px 5px rgba(0,0,0,0.1);
+      box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
       position: sticky;
       top: 0;
       z-index: 1000;
@@ -47,10 +46,22 @@
       height: 38px;
     }
 
-    .logo {
+    .logo-text {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.1;
+    }
+
+    .logo-main {
+      font-size: 1.1rem;
       font-weight: 600;
-      font-size: 1.2rem;
       color: #FFD700;
+    }
+
+    .logo-sub {
+      font-size: 0.7rem;
+      color: #ddd;
+      font-weight: 400;
     }
 
     .signup-btn {
@@ -67,7 +78,6 @@
       background-color: #e6c800;
     }
 
-    /* --- Login Container Styling --- */
     .login-container {
       max-width: 480px;
       margin: 80px auto;
@@ -167,7 +177,6 @@
       color: #fff;
     }
 
-    /* --- Improved Error Message Styling --- */
     .error-messages {
       margin-top: 20px;
       background-color: #ffe6e6;
@@ -197,25 +206,26 @@
       top: 0;
       color: #cc0000;
     }
-    .success-messages {
-  margin-top: 20px;
-  background-color: #e6ffe6; /* light green */
-  border: 1px solid #b3ffb3;
-  border-left: 5px solid #008000; /* dark green */
-  padding: 15px 20px;
-  border-radius: 8px;
-  font-size: 14px;
-  color: #006600;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  animation: fadeIn 0.3s ease-in-out;
-}
 
-.success-messages i {
-  color: #006600;
-  font-size: 18px;
-}
+    .success-messages {
+      margin-top: 20px;
+      background-color: #e6ffe6;
+      border: 1px solid #b3ffb3;
+      border-left: 5px solid #008000;
+      padding: 15px 20px;
+      border-radius: 8px;
+      font-size: 14px;
+      color: #006600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      animation: fadeIn 0.3s ease-in-out;
+    }
+
+    .success-messages i {
+      color: #006600;
+      font-size: 18px;
+    }
 
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(-5px); }
@@ -234,9 +244,14 @@
 
   <!-- Navigation -->
   <nav>
-    <div class="logo-section">
-      <img src="{% static 'logoukm.png' %}" alt="UKM Logo" class="logo-img" />
-      <div class="logo">SvFinder</div>
+    <div class="nav-left">
+      <div class="logo-section">
+        <img src="{% static 'logoukm.png' %}" alt="UKM Logo" class="logo-img" />
+        <div class="logo-text">
+          <span class="logo-main">SvFinder</span>
+          <span class="logo-sub">Fakulti Teknologi dan Sains Maklumat</span>
+        </div>
+      </div>
     </div>
     <a href="{% url 'signupsupervisor' %}" class="signup-btn">
       <i class="fas fa-user-plus"></i> Sign up →
@@ -261,25 +276,27 @@
         <label for="katalaluan_penyelia">Password</label>
         <input type="password" id="katalaluan_penyelia" name="katalaluan_penyelia" required placeholder="Enter your Password">
       </div>
-<div style="text-align: right; margin-top: -15px; margin-bottom: 15px;">
-  <a href="{% url 'forgot_password_sv' %}" style="font-size: 13px; color: #1c0e52; text-decoration: underline;">
-    Forgot Password?
-  </a>
-</div>
+
+      <div style="text-align: right; margin-top: -15px; margin-bottom: 15px;">
+        <a href="{% url 'forgot_password_sv' %}" style="font-size: 13px; color: #1c0e52; text-decoration: underline;">
+          Forgot Password?
+        </a>
+      </div>
 
       <button type="submit">Login</button>
-     {% if messages %}
-  {% for message in messages %}
-    <div class="{% if message.tags == 'error' %}error-messages{% elif message.tags == 'success' %}success-messages{% else %}info-messages{% endif %}">
-      {% if message.tags == 'error' %}
-        <i class="fas fa-exclamation-triangle"></i>
-      {% elif message.tags == 'success' %}
-        <i class="fas fa-check-circle"></i>
+
+      {% if messages %}
+        {% for message in messages %}
+          <div class="{% if message.tags == 'error' %}error-messages{% elif message.tags == 'success' %}success-messages{% else %}info-messages{% endif %}">
+            {% if message.tags == 'error' %}
+              <i class="fas fa-exclamation-triangle"></i>
+            {% elif message.tags == 'success' %}
+              <i class="fas fa-check-circle"></i>
+            {% endif %}
+            {{ message }}
+          </div>
+        {% endfor %}
       {% endif %}
-      {{ message }}
-    </div>
-  {% endfor %}
-{% endif %}
     </form>
 
     <div class="goback-btn">

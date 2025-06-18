@@ -23,35 +23,47 @@
     }
 
     /* --- Navbar Styling --- */
-    nav {
-      background-color: #001c54;
-      color: white;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 10px 40px;
-      height: 75px;
-      box-shadow: 0 3px 5px rgba(0,0,0,0.1);
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-    }
+     nav {
+  background-color: #001c54;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 40px;
+  height: 75px;
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
 
-    .logo-section {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
+.logo-section {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
 
-    .logo-img {
-      height: 38px;
-    }
+.logo-img {
+  height: 38px;
+}
 
-    .logo {
-      font-weight: 600;
-      font-size: 1.2rem;
-      color: #FFD700;
-    }
+.logo-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.1;
+}
+
+.logo-main {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #FFD700;
+}
+
+.logo-sub {
+  font-size: 0.7rem;
+  color: #ddd;
+  font-weight: 400;
+}
 
     .signup-btn {
       background-color: #FFD700;
@@ -218,6 +230,15 @@
   font-size: 18px;
 }
 
+ .footer {
+      margin-top: 60px;
+      padding: 20px;
+      text-align: center;
+      font-size: 13px;
+      color: var(--gray);
+    }
+
+
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(-5px); }
       to { opacity: 1; transform: translateY(0); }
@@ -235,10 +256,16 @@
 
   <!-- Navigation -->
   <nav>
-    <div class="logo-section">
-      <img src="{% static 'logoukm.png' %}" alt="UKM Logo" class="logo-img" />
-      <div class="logo">SvFinder</div>
-    </div>
+    <div class="nav-left">
+      <div class="logo-section">
+        <img src="{% static 'logoukm.png' %}" alt="UKM Logo" class="logo-img" />
+        <div class="logo-text">
+          <span class="logo-main">SvFinder</span>
+          <span class="logo-sub">Fakulti Teknologi dan Sains Maklumat</span>
+        </div>
+        </div>
+        </div>
+
     <a href="{% url 'signupstudent' %}" class="signup-btn">
       <i class="fas fa-user-plus"></i> Sign up →
     </a>

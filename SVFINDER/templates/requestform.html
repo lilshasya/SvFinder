@@ -33,7 +33,7 @@
       align-items: center;
       padding: 10px 40px;
       height: 75px;
-      box-shadow: 0 3px 5px rgba(0,0,0,0.1);
+      box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
       position: sticky;
       top: 0;
       z-index: 1000;
@@ -50,9 +50,21 @@
     }
 
     .logo-text {
-      font-size: 1.2rem;
+      display: flex;
+      flex-direction: column;
+      line-height: 1.1;
+    }
+
+    .logo-main {
+      font-size: 1.1rem;
       font-weight: 600;
       color: #FFD700;
+    }
+
+    .logo-sub {
+      font-size: 0.7rem;
+      color: #ddd;
+      font-weight: 400;
     }
 
     .nav-links {
@@ -325,10 +337,15 @@
 
 <!-- Navigation -->
 <nav>
-  <div class="logo-section">
-    <img src="{% static 'logoukm.png' %}" alt="UKM Logo" class="logo-img" />
-    <div class="logo-text">SvFinder</div>
-  </div>
+  <div class="nav-left">
+      <div class="logo-section">
+        <img src="{% static 'logoukm.png' %}" alt="UKM Logo" class="logo-img" />
+        <div class="logo-text">
+          <span class="logo-main">SvFinder</span>
+          <span class="logo-sub">Fakulti Teknologi dan Sains Maklumat</span>
+        </div>
+      </div>
+    </div>
   <div class="nav-links">
     <a href="{% url 'mainstudent' %}"><i class="fas fa-home"></i> Home</a>
   </div>
@@ -376,7 +393,7 @@
     </div>
 
     <div class="form-group">
-      <label for="fail_permohonan">Application File (PDF Only)</label>
+      <label for="fail_permohonan">Application File </label>
       <input type="file" id="fail_permohonan" name="fail_permohonan" accept=".pdf" required />
     </div>
 

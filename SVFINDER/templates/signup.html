@@ -31,7 +31,7 @@
       align-items: center;
       padding: 10px 40px;
       height: 75px;
-      box-shadow: 0 3px 5px rgba(0,0,0,0.1);
+      box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
       position: sticky;
       top: 0;
       z-index: 1000;
@@ -47,10 +47,22 @@
       height: 38px;
     }
 
-    .logo {
+    .logo-text {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.1;
+    }
+
+    .logo-main {
+      font-size: 1.1rem;
       font-weight: 600;
-      font-size: 1.2rem;
       color: #FFD700;
+    }
+
+    .logo-sub {
+      font-size: 0.7rem;
+      color: #ddd;
+      font-weight: 400;
     }
 
     .signup-btn {
@@ -176,10 +188,15 @@
 
 <!-- Navigation -->
 <nav>
-  <div class="logo-section">
-    <img src="{% static 'logoukm.png' %}" alt="UKM Logo" class="logo-img" />
-    <div class="logo">SvFinder</div>
-  </div>
+ <div class="nav-left">
+      <div class="logo-section">
+        <img src="{% static 'logoukm.png' %}" alt="UKM Logo" class="logo-img" />
+        <div class="logo-text">
+          <span class="logo-main">SvFinder</span>
+          <span class="logo-sub">Fakulti Teknologi dan Sains Maklumat</span>
+        </div>
+      </div>
+    </div>
   <a href="{% url 'login' %}" class="signup-btn">Login →</a>
 </nav>
 

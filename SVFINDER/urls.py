@@ -19,7 +19,6 @@ urlpatterns = [
     path('profilesupervisor/', views.profilesupervisor, name='profilesupervisor'),
     path('supervisor/update/', views.update_profile, name='update_profile'),
     path('mainadmin', views.mainadmin, name='mainadmin'),
-    path('adminstatic', views.adminstatic, name='adminstatic'),
     path('studentlist', views.studentlist, name='studentlist'),
     path('delete-studentlist/<str:id_pelajar>/', views.delete_studentlist, name='delete_studentlist'),
     path('supervisorlist', views.supervisorlist, name='supervisorlist'),

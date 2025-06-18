@@ -20,12 +20,14 @@
       box-sizing: border-box;
       font-family: 'Poppins', sans-serif;
     }
+
     body {
       background: linear-gradient(to right, #eef3fc, #e4e9ff);
       min-height: 100vh;
       display: flex;
       flex-direction: column;
     }
+
     nav {
       background-color: #001c54;
       color: white;
@@ -34,21 +36,40 @@
       align-items: center;
       padding: 10px 40px;
       height: 75px;
-      box-shadow: 0 3px 5px rgba(0,0,0,0.1);
+      box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
     }
+
     .logo-section {
       display: flex;
       align-items: center;
       gap: 12px;
     }
+
     .logo-img {
       height: 38px;
     }
-    .logo {
-      font-weight: 600;
-      font-size: 1.2rem;
-      color: var(--accent-color);
+
+    .logo-text {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.1;
     }
+
+    .logo-main {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #FFD700;
+    }
+
+    .logo-sub {
+      font-size: 0.7rem;
+      color: #ddd;
+      font-weight: 400;
+    }
+
     .login-btn {
       background-color: var(--accent-color);
       color: #000;
@@ -302,9 +323,13 @@
 </head>
 <body>
   <nav>
-    <div class="logo-section">
-      <img src="{% static 'logoukm.png' %}" alt="UKM Logo" class="logo-img" />
-      <div class="logo">SvFinder</div>
+      <div class="logo-section">
+        <img src="{% static 'logoukm.png' %}" alt="UKM Logo" class="logo-img" />
+        <div class="logo-text">
+          <span class="logo-main">SvFinder</span>
+          <span class="logo-sub">Fakulti Teknologi dan Sains Maklumat</span>
+        </div>
+      </div>
     </div>
     <a href="{% url 'loginsupervisor' %}" class="login-btn">
       <i class="fas fa-user-plus"></i> Login →

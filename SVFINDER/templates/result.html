@@ -2,14 +2,19 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Application Result</title>
-    <style>
-        :root {
-      --primary: #002147;
-      --accent: #ffc107;
-      --bg: #f4f6fa;
-      --text: #1e1e1e;
+  <meta charset="UTF-8" />
+  <title>Submit Result | SvFinder</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" href="{% static 'logoukm.png' %}" type="image/png" />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@600&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --navy: #001c54;
+      --gold: #FFD700;
+      --light-bg: #f5f8ff;
+      --text-dark: #222;
+      --gray: #777;
+      --link-blue: #007bff;
     }
 
     * {
@@ -19,13 +24,14 @@
       font-family: 'Poppins', sans-serif;
     }
 
-     body {
+    body {
       background: linear-gradient(to right, #f0f4ff, #e5ecff);
-      color: #333;
-      min-height: 100vh;
+      color: #1e1e1e;
+      overflow-x: hidden;
     }
 
-     nav {
+
+    nav {
   background-color: #001c54;
   color: white;
   display: flex;
@@ -69,7 +75,7 @@
 
 
     .nav-links a {
-        color: #fff;
+      color: #fff;
       text-decoration: none;
       font-weight: 500;
       font-size: 15px;
@@ -78,55 +84,77 @@
     }
 
     .nav-links a:hover {
-      color: #ffd700;
+      color: var(--gold);
     }
 
-        .container {
-            max-width: 600px;
-            margin: 40px auto;
-            background: white;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-        }
-        label {
-            display: block;
-            font-weight: bold;
-            margin-top: 20px;
-        }
-        input, select, textarea {
-            width: 100%;
-            padding: 10px;
-            margin-top: 5px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-        }
-        textarea {
-            height: 120px;
-        }
-        .submit-btn {
-            margin-top: 20px;
-            padding: 10px 20px;
-            background-color: #2196F3;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
+    .container {
+      max-width: 680px;
+      margin: 60px auto;
+      background: #fff;
+      padding: 40px 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+    }
 
-        .footer {
-      margin-top: 60px;
-      padding: 20px;
+    h2 {
       text-align: center;
-      font-size: 13px;
+      font-size: 28px;
+      font-family: 'Roboto Slab', serif;
+      margin-bottom: 30px;
+      color: var(--navy);
+    }
+
+    label {
+      display: block;
+      font-weight: 600;
+      margin: 20px 0 6px;
+      color: var(--navy);
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 14px;
+      background: #fefefe;
       color: var(--gray);
     }
 
-    </style>
+    textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+
+    .submit-btn {
+      margin-top: 30px;
+      padding: 12px 20px;
+      background-color: var(--navy);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      width: 100%;
+    }
+
+    .submit-btn:hover {
+      background-color: #003377;
+    }
+
+    @media (max-width: 600px) {
+      .container {
+        margin: 30px 15px;
+        padding: 25px 20px;
+      }
+    }
+  </style>
 </head>
 <body>
 
-    <nav>
+  <nav>
     <div class="logo-section">
       <img src="{% static 'logoukm.png' %}" alt="UKM Logo" class="logo-img" />
       <div class="logo-text">
@@ -134,44 +162,34 @@
         <span class="logo-sub">Fakulti Teknologi dan Sains Maklumat</span>
       </div>
     </div>
-    <div class="nav-links">
-      <a href="{% url 'mainsupervisor' %}">Home</a>
-    </div>
   </nav>
 
-
-<div class="container">
+  <div class="container">
     <h2>Submit Application Result</h2>
     <form method="POST">
-        {% csrf_token %}
+      {% csrf_token %}
 
-        <!-- ID Status: Automatically generated -->
-        <label>ID Status:</label>
-        <input type="text" name="id_status" value="S {{ permohonan.id_pelajar_id }}" readonly>
+      <label>ID Status</label>
+      <input type="text" name="id_status" value="S {{ permohonan.id_pelajar_id }}" readonly>
 
-        <!-- ID Permohonan: Automatically filled -->
-        <label>ID Permohonan:</label>
-        <input type="text" name="id_permohonan" value="{{ permohonan.id_permohonan }}" readonly>
+      <label>ID Permohonan</label>
+      <input type="text" name="id_permohonan" value="{{ permohonan.id_permohonan }}" readonly>
 
-        <!-- Status Dropdown -->
-        <label>Status:</label>
-        <select name="status" required>
-            <option value="">-- Choose Status --</option>
-            <option value="Accepted">Accepted</option>
-            <option value="Rejected">Rejected</option>
-        </select>
+      <label>Status</label>
+      <select name="status" required>
+        <option value="">-- Choose Status --</option>
+        <option value="Accepted">Accepted</option>
+        <option value="Rejected">Rejected</option>
+      </select>
 
-        <!-- Ulasan -->
-        <label>Ulasan:</label>
-        <textarea name="ulasan" maxlength="3000" required></textarea>
+      <label>Ulasan</label>
+      <textarea name="ulasan" maxlength="3000" required placeholder="Enter your remarks..."></textarea>
 
-        <!-- Tarikh Kemaskini (Auto filled on server side) -->
-        <input type="hidden" name="tarikh_kemaskini_status" value="{{ today|date:'Y-m-d' }}">
+      <input type="hidden" name="tarikh_kemaskini_status" value="{{ today|date:'Y-m-d' }}">
 
-<button type="submit" class="submit-btn">Submit</button>    </form>
-</div>
-<div class="footer">
-    &copy; {{ now.year }} Universiti Kebangsaan Malaysia | Fakulti Teknologi dan Sains Maklumat
+      <button type="submit" class="submit-btn">Submit</button>
+    </form>
   </div>
+
 </body>
 </html>

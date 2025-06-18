@@ -7,11 +7,12 @@ from datetime import date
 from datetime import datetime, time, timedelta
 from django.utils.timezone import now
 from datetime import timedelta
+from django.db.models import Count
 from django.utils import timezone
 from django.contrib.auth.hashers import check_password
 from django.contrib.auth.hashers import make_password
-
 from django.core.paginator import Paginator
+from django.db.models import Exists, OuterRef
 
 
 def index(request):
@@ -365,16 +366,19 @@ def mainsupervisor(request):
     if id_penyelia:
         penyelia = get_object_or_404(Penyelia, id_penyelia=id_penyelia)
         welcome_message = f"Welcome, {penyelia.nama_penyelia}"
-        # Optimized with select_related
-        permohonan_list = Permohonan.objects.select_related('id_pelajar').filter(id_penyelia=penyelia)
+
+        # Exclude permohonan that already has a status
+        permohonan_with_status = Status.objects.filter(id_permohonan=OuterRef('pk'))
+        permohonan_list = (
+            Permohonan.objects.select_related('id_pelajar')
+            .filter(id_penyelia=penyelia)
+            .annotate(has_status=Exists(permohonan_with_status))
+            .filter(has_status=False)
+        )
     else:
         penyelia = None
         permohonan_list = []
         welcome_message = "Welcome, Guest"
-
-    # Add information if status is already set for each permohonan
-    for permohonan in permohonan_list:
-        permohonan.has_status = Status.objects.filter(id_permohonan=permohonan).exists()
 
     return render(request, 'mainsupervisor.html', {
         'id_penyelia': id_penyelia,
@@ -382,7 +386,6 @@ def mainsupervisor(request):
         'students': permohonan_list,
         'penyelia': penyelia,
     })
-
 
 def profilesupervisor(request):
     if 'supervisor' not in request.session:
@@ -436,7 +439,65 @@ def update_profilesupervisor(request):
     return redirect('profilesupervisor') 
 
 def mainadmin(request):
-    return render(request, 'mainadmin.html')
+    student_count = Pelajar.objects.count()
+    supervisor_count = Penyelia.objects.count()
+    report_count = Permohonan.objects.count()
+
+    range_type = request.GET.get('range', 'week')  # default to 'week'
+    today = timezone.now().date()
+
+    labels = []
+    data = []
+
+    if range_type == 'day':
+        labels = [today.strftime('%d-%b-%Y')]
+        count = Permohonan.objects.filter(tarikh_permohonan=today).count()
+        data = [count]
+
+    elif range_type == 'month':
+        start_of_month = today.replace(day=1)
+        end_of_month = (start_of_month.replace(month=start_of_month.month % 12 + 1, day=1) - timedelta(days=1))
+
+        monthly_data = (
+            Permohonan.objects
+            .filter(tarikh_permohonan__range=[start_of_month, end_of_month])
+            .values('tarikh_permohonan')
+            .annotate(count=Count('id_permohonan'))
+        )
+
+        # Create a dictionary for fast lookup
+        count_map = {item['tarikh_permohonan']: item['count'] for item in monthly_data}
+
+        for i in range(1, end_of_month.day + 1):
+            day = start_of_month.replace(day=i)
+            labels.append(day.strftime('%d %b'))
+            data.append(count_map.get(day, 0))
+
+    else:  # week
+        start_date = today - timedelta(days=6)
+        weekly_data = (
+            Permohonan.objects
+            .filter(tarikh_permohonan__range=[start_date, today])
+            .values('tarikh_permohonan')
+            .annotate(count=Count('id_permohonan'))
+        )
+        count_map = {item['tarikh_permohonan']: item['count'] for item in weekly_data}
+
+        for i in range(7):
+            day = start_date + timedelta(days=i)
+            labels.append(day.strftime('%a'))  # e.g., Mon
+            data.append(count_map.get(day, 0))
+
+    context = {
+        'student_count': student_count,
+        'supervisor_count': supervisor_count,
+        'report_count': report_count,
+        'chart_labels': labels,
+        'chart_data': data,
+        'selected_range': range_type,
+    }
+
+    return render(request, 'mainadmin.html', context)
 
 def studentlist(request):
     search_id = request.GET.get('search_id')
@@ -524,44 +585,53 @@ def requestform(request, id_penyelia):
     id_pelajar_id = request.session['student']
     pelajar = get_object_or_404(Pelajar, id_pelajar=id_pelajar_id)
 
-    tarikh_permohonan = now().date()
-    id_permohonan = f"P{id_pelajar_id}"
+    tarikh_permohonan = date.today()
+    id_permohonan = f"P{id_pelajar_id}_{now().strftime('%Y%m%d%H%M%S')}"
     error_message = None
 
-    # Check if student already has an accepted supervisor
-    accepted_exists = Permohonan.objects.filter(
-        id_pelajar=pelajar,
+    # ✅ Check if already accepted
+    accepted_exists = Status.objects.filter(
+        id_permohonan__id_pelajar=pelajar,
         status='Accepted'
     ).exists()
 
     if accepted_exists:
-        error_message = "You can't make a new request because you already have a supervisor assigned."
-
+        error_message = "You already have a supervisor assigned. You cannot make any more requests."
     else:
-        # Check if student needs to wait 3 days after last request
         last_request = Permohonan.objects.filter(id_pelajar=pelajar).order_by('-tarikh_permohonan').first()
-        if last_request:
-            days_since_last = (tarikh_permohonan - last_request.tarikh_permohonan).days
-            if days_since_last < 3:
-                next_allowed = last_request.tarikh_permohonan + timedelta(days=3)
-                error_message = (
-                    f"You can only submit a new application after {next_allowed.strftime('%d %B %Y')}."
-                )
 
-    if request.method == 'POST':
-        if accepted_exists:
-            error_message = "Submission blocked: You already have a supervisor assigned."
-        elif not error_message:
-            sinopsis = request.FILES.get('fail_permohonan', None)
-            Permohonan.objects.create(
-                id_permohonan=id_permohonan,
-                id_pelajar=pelajar,
-                id_penyelia=supervisor,
-                tarikh_permohonan=tarikh_permohonan,
-                sinopsis=sinopsis,
-                status='Pending'
-            )
-            return redirect('status')
+        if last_request:
+            last_status = Status.objects.filter(id_permohonan=last_request).order_by('-tarikh_kemaskini_status').first()
+            days_since_last = (tarikh_permohonan - last_request.tarikh_permohonan).days
+
+            if not last_status:
+                if days_since_last >= 3:
+                    Status.objects.create(
+                        id_status=f"S{last_request.id_pelajar.id}",
+                        id_permohonan=last_request,
+                        status='Rejected',
+                        ulasan='Auto-rejected due to no response after 3 days.',
+                        tarikh_kemaskini_status=tarikh_permohonan
+                    )
+                else:
+                    next_allowed = last_request.tarikh_permohonan + timedelta(days=3)
+                    error_message = f"You must wait until {next_allowed.strftime('%d %B %Y')} to reapply."
+            elif last_status.status != 'Rejected' and days_since_last < 3:
+                next_allowed = last_request.tarikh_permohonan + timedelta(days=3)
+                error_message = f"You must wait until {next_allowed.strftime('%d %B %Y')} to reapply."
+
+    if request.method == 'POST' and not error_message:
+        sinopsis = request.FILES.get('fail_permohonan')
+
+        Permohonan.objects.create(
+            id_permohonan=id_permohonan,
+            id_pelajar=pelajar,
+            id_penyelia=supervisor,
+            tarikh_permohonan=tarikh_permohonan,
+            sinopsis=sinopsis
+        )
+
+        return redirect('status')
 
     return render(request, 'requestform.html', {
         'id_pelajar': id_pelajar_id,
@@ -571,16 +641,10 @@ def requestform(request, id_penyelia):
         'error_message': error_message,
     })
 
-def adminstatic(request):
-    return render(request, 'adminstatic.html', {
-        'id_laporan': 'LPR001',
-        'bilangan_diluluskan': 12,
-        'bilangan_ditolak': 5,
-        'id_admin': 'ADM2025',
-    })
 
 def status(request):
     return render(request, 'status.html')
+
 
 def statuspermohonan(request):
     if 'student' not in request.session:
@@ -590,103 +654,106 @@ def statuspermohonan(request):
     pelajar = get_object_or_404(Pelajar, id_pelajar=id_pelajar_id)
 
     permohonan_list = Permohonan.objects.filter(id_pelajar=pelajar).prefetch_related('status_set')
+    now_time = timezone.now()
+    accepted_exists = False  # Flag for accepted status
 
     for permohonan in permohonan_list:
-        latest_status = permohonan.status_set.order_by('-tarikh_kemaskini_status').first()
+        status_list = permohonan.status_set.order_by('-tarikh_kemaskini_status')
+        latest_status = status_list.first()
+
+        tarikh_permohonan_aware = timezone.make_aware(
+            datetime.combine(permohonan.tarikh_permohonan, time.min),
+            timezone.get_current_timezone()
+        )
+        age = now_time - tarikh_permohonan_aware
 
         if latest_status:
-            # Convert tarikh_permohonan (a date) to aware datetime at 00:00
-            tarikh_permohonan_aware = timezone.make_aware(
-                datetime.combine(permohonan.tarikh_permohonan, time.min),
-                timezone.get_current_timezone()
-            )
-            now = timezone.now()
-            age = now - tarikh_permohonan_aware
-
-            print(f"[DEBUG] Permohonan ID: {permohonan.id_permohonan}")
-            print(f"[DEBUG] Status: {latest_status.status}")
-            print(f"[DEBUG] Request Date: {permohonan.tarikh_permohonan}")
-            print(f"[DEBUG] Age: {age.days} days")
-
-            if latest_status.status == "pending" and age > timedelta(days=3):
-                # Update status to Rejected due to timeout
+            if latest_status.status == "Accepted":
+                accepted_exists = True  # ✅ Student already has an accepted supervisor
+            elif latest_status.status == "Pending" and age > timedelta(days=3):
                 latest_status.status = "Rejected"
                 latest_status.ulasan = "Auto rejected after 3 days without response."
-                latest_status.tarikh_kemaskini_status = now
+                latest_status.tarikh_kemaskini_status = now_time
                 latest_status.save()
-                print(f"[DEBUG] Status updated to {latest_status.status} for permohonan {permohonan.id_permohonan}")
+        else:
+            if age > timedelta(days=3):
+                Status.objects.create(
+                    id_status=f"S{permohonan.id_pelajar.id}",
+                    id_permohonan=permohonan,
+                    status='Rejected',
+                    ulasan='Auto rejected due to no status after 3 days.',
+                    tarikh_kemaskini_status=now_time.date()
+                )
 
-        # Attach latest_status for template usage
-        permohonan.latest_status = latest_status
+        permohonan.latest_status = Status.objects.filter(id_permohonan=permohonan).order_by('-tarikh_kemaskini_status').first()
 
     return render(request, 'statuspermohonan.html', {
         'permohonan_list': permohonan_list,
-        'pelajar': pelajar
+        'pelajar': pelajar,
+        'accepted_exists': accepted_exists  # Pass to template
     })
 
-def statusdetails(request, id_permohonan):
-    # Get the permohonan instance using id_permohonan
-    permohonan = get_object_or_404(Permohonan, id=id_permohonan)
-
-    # Get the related status instance
-    status = Status.objects.filter(id_permohonan=permohonan).first()
-
-    return render(request, 'statusdetails.html', {
-        'status': status,
-        'permohonan': permohonan
-    })
 
 def student_detail(request, id):
     permohonan = get_object_or_404(Permohonan, id_permohonan=id)
 
     if request.method == 'POST' and request.user.groups.filter(name='Penyelia').exists():
-        status = request.POST.get('status')
-        if status in ['accept', 'reject']:
-            permohonan.status = status
-            permohonan.save()
+        status_choice = request.POST.get('status')
+        ulasan = request.POST.get('remarks', '')
 
-            # Redirect to result page
+        if status_choice in ['accept', 'reject']:
+            status_value = 'Accepted' if status_choice == 'accept' else 'Rejected'
+
+            # Rejected other pending permohonan if accept is selected
+            if status_value == 'Accepted':
+                Status.objects.filter(
+                    id_permohonan__id_pelajar=permohonan.id_pelajar,
+                    status='Pending'
+                ).exclude(id_permohonan=permohonan).update(
+                    status='Rejected',
+                    ulasan='Auto rejected after another supervisor accepted.',
+                    tarikh_kemaskini_status=now()
+                )
+
+            Status.objects.create(
+                id_status=f"S{permohonan.id_pelajar.id}_{now().strftime('%Y%m%d%H%M%S')}",
+                id_permohonan=permohonan,
+                status=status_value,
+                ulasan=ulasan or ('Accepted by supervisor' if status_value == 'Accepted' else 'Rejected by supervisor'),
+                tarikh_kemaskini_status=now()
+            )
+
             return redirect('result', id=permohonan.id_permohonan)
 
     return render(request, 'studentdetails.html', {'permohonan': permohonan})
 
 def result_view(request, id_permohonan):
     permohonan = get_object_or_404(Permohonan, id_permohonan=id_permohonan)
-    id_status = f"S {permohonan.id_pelajar_id}"
-
-    # Try to get or auto-create rejected status if overdue
-    status_instance = Status.objects.filter(id_status=id_status).first()
-
-    if not status_instance:
-        days_passed = (date.today() - permohonan.tarikh_permohonan).days
-        if days_passed > 3:
-            # Auto-reject and create status
-            status_instance = Status.objects.create(
-                id_status=id_status,
-                id_permohonan=permohonan,
-                status="Rejected",
-                ulasan="Automatically rejected after 3 days without action.",
-                tarikh_kemaskini_status=date.today()
-            )
 
     if request.method == "POST":
+        id_status = request.POST.get("id_status")
         status_value = request.POST.get("status")
         ulasan = request.POST.get("ulasan")
         tarikh_kemaskini_status = date.today()
 
-        if status_instance:
-            # Update existing status
-            status_instance.status = status_value
-            status_instance.ulasan = ulasan
-            status_instance.tarikh_kemaskini_status = tarikh_kemaskini_status
-            status_instance.save()
-        else:
-            # Create a new one if not found
-            Status.objects.create(
-                id_status=id_status,
-                id_permohonan=permohonan,
-                status=status_value,
-                ulasan=ulasan,
+        # Save or update the current status
+        Status.objects.update_or_create(
+            id_status=id_status,
+            defaults={
+                "id_permohonan": permohonan,
+                "status": status_value,
+                "ulasan": ulasan,
+                "tarikh_kemaskini_status": tarikh_kemaskini_status,
+            }
+        )
+
+        # Tambahan: Reject permohonan lain jika ada Accepted
+        if status_value == "Accepted":
+            Status.objects.filter(
+                id_permohonan__id_pelajar=permohonan.id_pelajar
+            ).exclude(id_permohonan=permohonan).update(
+                status="Rejected",
+                ulasan="Auto rejected after one application was accepted.",
                 tarikh_kemaskini_status=tarikh_kemaskini_status
             )
 
@@ -697,6 +764,7 @@ def result_view(request, id_permohonan):
         "today": date.today()
     }
     return render(request, "result.html", context)
+
 
 
 def result_success(request):  # <- match name here
