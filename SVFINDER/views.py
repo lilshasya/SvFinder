@@ -731,12 +731,11 @@ def result_view(request, id_permohonan):
     permohonan = get_object_or_404(Permohonan, id_permohonan=id_permohonan)
 
     if request.method == "POST":
-        id_status = request.POST.get("id_status")
+        id_status = f"S-{permohonan.id_permohonan}"  # Unique per permohonan
         status_value = request.POST.get("status")
         ulasan = request.POST.get("ulasan")
         tarikh_kemaskini_status = date.today()
 
-        # Save or update the current status
         Status.objects.update_or_create(
             id_status=id_status,
             defaults={
@@ -747,7 +746,7 @@ def result_view(request, id_permohonan):
             }
         )
 
-        # Tambahan: Reject permohonan lain jika ada Accepted
+        # Tambahan: Auto-reject permohonan lain jika accepted
         if status_value == "Accepted":
             Status.objects.filter(
                 id_permohonan__id_pelajar=permohonan.id_pelajar
