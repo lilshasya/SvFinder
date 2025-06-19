@@ -23,50 +23,49 @@
     }
 
     nav {
-  background-color: #001c54;
-  color: white;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px 40px;
-  height: 75px;
-  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-}
+      background-color: #001c54;
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 40px;
+      height: 75px;
+      box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
 
-.logo-section {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
+    .logo-section {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
 
-.logo-img {
-  height: 38px;
-}
+    .logo-img {
+      height: 38px;
+    }
 
-.logo-text {
-  display: flex;
-  flex-direction: column;
-  line-height: 1.1;
-}
+    .logo-text {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.1;
+    }
 
-.logo-main {
-  font-size: 1.1rem;
-  font-weight: 600;
-  color: #FFD700;
-}
+    .logo-main {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #FFD700;
+    }
 
-.logo-sub {
-  font-size: 0.7rem;
-  color: #ddd;
-  font-weight: 400;
-}
-
+    .logo-sub {
+      font-size: 0.7rem;
+      color: #ddd;
+      font-weight: 400;
+    }
 
     .nav-links a {
-        color: #fff;
+      color: #fff;
       text-decoration: none;
       font-weight: 500;
       font-size: 15px;
@@ -113,8 +112,8 @@
     .profile-pic {
       width: 260px;
       height: 260px;
-      border-radius: 50%;
-      object-fit: cover;
+      object-fit: contain;
+      border-radius: 12px; /* square with rounded corners */
       background-color: #fff;
       padding: 6px;
       border: 2px solid #ccc;
@@ -199,7 +198,7 @@
 
       .profile-pic {
         width: 200px;
-        height: 200px;
+        height: auto;
       }
 
       form {
@@ -211,18 +210,18 @@
 <body>
 
 <!-- Navbar -->
- <nav>
-    <div class="logo-section">
-      <img src="{% static 'logoukm.png' %}" alt="UKM Logo" class="logo-img" />
-      <div class="logo-text">
-        <span class="logo-main">SvFinder</span>
-        <span class="logo-sub">Fakulti Teknologi dan Sains Maklumat</span>
-      </div>
+<nav>
+  <div class="logo-section">
+    <img src="{% static 'logoukm.png' %}" alt="UKM Logo" class="logo-img" />
+    <div class="logo-text">
+      <span class="logo-main">SvFinder</span>
+      <span class="logo-sub">Fakulti Teknologi dan Sains Maklumat</span>
     </div>
-    <div class="nav-links">
-      <a href="{% url 'mainsupervisor' %}">Home</a>
-    </div>
-  </nav>
+  </div>
+  <div class="nav-links">
+    <a href="{% url 'mainsupervisor' %}">Home</a>
+  </div>
+</nav>
 
 <!-- Profile Container -->
 <div class="container">
@@ -270,9 +269,10 @@
     </form>
   </div>
 </div>
+
 <div class="footer">
-    &copy; {{ now.year }} Universiti Kebangsaan Malaysia | Fakulti Teknologi dan Sains Maklumat
-  </div>
+  &copy; {{ now.year }} Universiti Kebangsaan Malaysia | Fakulti Teknologi dan Sains Maklumat
+</div>
 
 <!-- JS -->
 <script>
