@@ -8,13 +8,10 @@
   <title>Application List | SvFinder</title>
 
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&family=Georgia&display=swap" rel="stylesheet">
-
   <style>
     :root {
       --primary: #002147;
       --accent: #ffc107;
-      --bg: #f4f6fa;
-      --text: #1e1e1e;
     }
 
     * {
@@ -24,57 +21,56 @@
       font-family: 'Poppins', sans-serif;
     }
 
-     body {
+    body {
       background: linear-gradient(to right, #f0f4ff, #e5ecff);
       color: #333;
       min-height: 100vh;
     }
 
     nav {
-  background-color: #001c54;
-  color: white;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px 40px;
-  height: 75px;
-  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-}
+      background-color: #001c54;
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 40px;
+      height: 75px;
+      box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
 
-.logo-section {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
+    .logo-section {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
 
-.logo-img {
-  height: 38px;
-}
+    .logo-img {
+      height: 38px;
+    }
 
-.logo-text {
-  display: flex;
-  flex-direction: column;
-  line-height: 1.1;
-}
+    .logo-text {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.1;
+    }
 
-.logo-main {
-  font-size: 1.1rem;
-  font-weight: 600;
-  color: #FFD700;
-}
+    .logo-main {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #FFD700;
+    }
 
-.logo-sub {
-  font-size: 0.7rem;
-  color: #ddd;
-  font-weight: 400;
-}
-
+    .logo-sub {
+      font-size: 0.7rem;
+      color: #ddd;
+      font-weight: 400;
+    }
 
     .nav-links a {
-        color: #fff;
+      color: #fff;
       text-decoration: none;
       font-weight: 500;
       font-size: 15px;
@@ -101,15 +97,15 @@
       font-size: 32px;
       text-align: center;
       color: var(--primary);
-      margin-bottom: 30px;
+      margin-bottom: 20px;
     }
 
     .filters {
       display: flex;
       justify-content: center;
-      margin-bottom: 25px;
-      gap: 10px;
       flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 20px;
     }
 
     .filters button {
@@ -120,20 +116,68 @@
       border-radius: 5px;
       font-weight: 600;
       cursor: pointer;
-      transition: all 0.3s ease;
     }
 
-    .filters button.active,
-    .filters button:hover {
+    .filters button.active {
       background-color: #e6ac00;
       color: #fff;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
     }
+
+    .search-bar {
+      text-align: center;
+      margin-bottom: 25px;
+    }
+
+    .search-bar input {
+      width: 300px;
+      max-width: 100%;
+      padding: 10px 14px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 14px;
+    }
+
+    .count-summary {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+      margin-bottom: 25px;
+    }
+
+    .count-box {
+      padding: 14px 18px;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 500;
+      display: none;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .count-box.show {
+      display: flex;
+    }
+
+    .count-box span {
+      font-size: 20px;
+      font-weight: 700;
+    }
+
+    .count-box.total { background-color: #e0e7ff; color: #002147; }
+    .count-box.accepted { background-color: #d4edda; color: #155724; }
+    .count-box.rejected { background-color: #f8d7da; color: #721c24; }
+    .count-box.pending { background-color: #fff3cd; color: #856404; }
 
     table {
       width: 100%;
       border-collapse: collapse;
-      margin-top: 10px;
+    }
+
+    th, td {
+      padding: 12px 15px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
     }
 
     thead {
@@ -142,59 +186,24 @@
 
     th {
       color: var(--accent);
-      text-align: left;
+    }
+
+    .status-badge {
+      padding: 6px 12px;
+      border-radius: 12px;
       font-weight: 600;
-      font-size: 15px;
-      padding: 14px 16px;
+      font-size: 13px;
+      display: inline-block;
     }
 
-    td {
-      padding: 14px 16px;
-      border-bottom: 1px solid #ddd;
-      font-size: 14px;
-      background-color: #fff;
-    }
-
-    tr:nth-child(even) td {
-      background-color: #f9f9f9;
-    }
-
-    tr:hover td {
-      background-color: #eef1ff;
-      transition: background-color 0.2s ease;
-    }
+    .status-accepted { background-color: #d4edda; color: #155724; }
+    .status-rejected { background-color: #f8d7da; color: #721c24; }
+    .status-pending { background-color: #fff3cd; color: #856404; }
 
     .empty-message {
       text-align: center;
-      color: #777;
-      font-size: 16px;
-      padding: 30px 0;
-    }
-
-    .footer {
-      margin-top: 60px;
       padding: 20px;
-      text-align: center;
-      font-size: 13px;
-      color: var(--gray);
-    }
-
-    @media (max-width: 768px) {
-      .container {
-        padding: 20px;
-      }
-
-      table {
-        font-size: 13px;
-      }
-
-      th, td {
-        padding: 10px;
-      }
-
-      h1 {
-        font-size: 24px;
-      }
+      color: #777;
     }
   </style>
 </head>
@@ -215,6 +224,10 @@
   <div class="container">
     <h1>Your Application List</h1>
 
+    <div class="search-bar">
+      <input type="text" id="searchInput" onkeyup="applyFilter()" placeholder="Search by student name or ID...">
+    </div>
+
     <div class="filters">
       <button id="all" class="active" onclick="filterStatus('')">ALL</button>
       <button id="accepted" onclick="filterStatus('accepted')">ACCEPTED</button>
@@ -222,8 +235,15 @@
       <button id="pending" onclick="filterStatus('pending')">PENDING</button>
     </div>
 
+    <div class="count-summary" id="counts">
+      <div class="count-box total show">Total: <span id="total-count">{{ total_count }}</span></div>
+      <div class="count-box accepted show">Accepted: <span id="accepted-count">{{ accepted_count }}</span></div>
+      <div class="count-box rejected show">Rejected: <span id="rejected-count">{{ rejected_count }}</span></div>
+      <div class="count-box pending show">Pending: <span id="pending-count">{{ pending_count }}</span></div>
+    </div>
+
     {% if no_data %}
-      <p class="empty-message">No applications found related to your account. Please check back later.</p>
+      <p class="empty-message">No applications found.</p>
     {% else %}
       <table>
         <thead>
@@ -236,32 +256,69 @@
         </thead>
         <tbody>
           {% for item in permohonan_data %}
-            <tr class="status-row" data-status="{{ item.status|lower }}">
-              <td>{{ item.id_permohonan }}</td>
-              <td>{{ item.nama_pelajar }}</td>
-              <td>{{ item.status }}</td>
-              <td>{{ item.tarikh_kemaskini_status }}</td>
-            </tr>
-          {% empty %}
-            <tr><td colspan="4" class="empty-message">No applications found.</td></tr>
+          <tr class="status-row" data-status="{{ item.status|lower }}" data-name="{{ item.nama_pelajar|lower }}">
+            <td>{{ item.id_permohonan }}</td>
+            <td>{{ item.nama_pelajar }}</td>
+            <td><span class="status-badge status-{{ item.status|lower }}">{{ item.status }}</span></td>
+            <td>{{ item.tarikh_kemaskini_status }}</td>
+          </tr>
           {% endfor %}
         </tbody>
       </table>
     {% endif %}
   </div>
-  
 
   <script>
-    function filterStatus(status) {
-      const rows = document.querySelectorAll('.status-row');
-      rows.forEach(row => {
-        row.style.display = status === '' || row.dataset.status === status ? '' : 'none';
-      });
+    let currentStatusFilter = '';
 
+    function filterStatus(status) {
+      currentStatusFilter = status;
       document.querySelectorAll('.filters button').forEach(btn => btn.classList.remove('active'));
       document.querySelector(`#${status || 'all'}`).classList.add('active');
+      applyFilter();
+    }
+
+    function applyFilter() {
+      const searchValue = document.getElementById('searchInput').value.toLowerCase();
+      const rows = document.querySelectorAll('.status-row');
+      let total = 0, accepted = 0, rejected = 0, pending = 0;
+
+      rows.forEach(row => {
+        const rowStatus = row.dataset.status;
+        const rowName = row.dataset.name;
+        const rowID = row.children[0].innerText.toLowerCase();
+
+        const matchStatus = currentStatusFilter === '' || rowStatus === currentStatusFilter;
+        const matchSearch = rowName.includes(searchValue) || rowID.includes(searchValue);
+
+        const isVisible = matchStatus && matchSearch;
+        row.style.display = isVisible ? '' : 'none';
+
+        if (isVisible) {
+          total++;
+          if (rowStatus === 'accepted') accepted++;
+          else if (rowStatus === 'rejected') rejected++;
+          else if (rowStatus === 'pending') pending++;
+        }
+      });
+
+      document.getElementById("total-count").textContent = total;
+      document.getElementById("accepted-count").textContent = accepted;
+      document.getElementById("rejected-count").textContent = rejected;
+      document.getElementById("pending-count").textContent = pending;
+
+      // Show relevant count boxes only
+      document.querySelectorAll('.count-box').forEach(box => box.classList.remove('show'));
+      if (currentStatusFilter === '') {
+        document.querySelector('.count-box.total').classList.add("show");
+        document.querySelector('.count-box.accepted').classList.add("show");
+        document.querySelector('.count-box.rejected').classList.add("show");
+        document.querySelector('.count-box.pending').classList.add("show");
+      } else {
+        const box = document.querySelector(`.count-box.${currentStatusFilter}`);
+        if (box) box.classList.add("show");
+      }
     }
   </script>
-
 </body>
 </html>

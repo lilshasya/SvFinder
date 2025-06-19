@@ -28,46 +28,52 @@
 
     body {
       background: linear-gradient(to right, #f0f4ff, #e5ecff);
-      color: var(--text);
+      color: #1e1e1e;
       overflow-x: hidden;
     }
 
-    nav {
-      background: var(--primary);
-      color: white;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 15px 40px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-    }
+    /* --- Navbar Styling --- */
+   nav {
+  background-color: #001c54;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 40px;
+  height: 75px;
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
 
-    .logo-section {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
+.logo-section {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
 
-    .logo-img {
-      height: 40px;
-    }
+.logo-img {
+  height: 38px;
+}
 
-    .logo-text {
-      display: flex;
-      flex-direction: column;
-      line-height: 1.1;
-    }
+.logo-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.1;
+}
 
-    .logo-main {
-      font-size: 1.2rem;
-      font-weight: 600;
-      color: #FFD700;
-    }
+.logo-main {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #FFD700;
+}
 
-    .logo-sub {
-      font-size: 0.75rem;
-      color: #ccc;
-    }
+.logo-sub {
+  font-size: 0.7rem;
+  color: #ddd;
+  font-weight: 400;
+}
 
     .nav-links {
       display: flex;

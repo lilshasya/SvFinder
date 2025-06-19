@@ -694,6 +694,7 @@ def statuspermohonan(request):
     })
 
 
+
 def student_detail(request, id):
     permohonan = get_object_or_404(Permohonan, id_permohonan=id)
 
@@ -773,34 +774,50 @@ def result_success(request):  # <- match name here
 
 def list(request):
     id_penyelia = request.session.get('supervisor', None)
-    
+
     if not id_penyelia:
-        return render(request, 'list.html', {'permohonan_data': []})
+        return render(request, 'list.html', {'permohonan_data': [], 'no_data': True})
 
     penyelia = get_object_or_404(Penyelia, id_penyelia=id_penyelia)
     permohonan_list = Permohonan.objects.filter(id_penyelia=penyelia)
 
     data = []
+    accepted_count = 0
+    rejected_count = 0
+    pending_count = 0
+
     for permohonan in permohonan_list:
         status_obj = Status.objects.filter(id_permohonan=permohonan).last()
-        
-        # Check if there's no status, and set the status to 'PENDING'
+
         if not status_obj:
             status = 'Pending'
             tarikh_kemaskini_status = 'Not updated'
+            pending_count += 1
         else:
             status = status_obj.status
             tarikh_kemaskini_status = status_obj.tarikh_kemaskini_status
 
+            if status.lower() == 'accepted':
+                accepted_count += 1
+            elif status.lower() == 'rejected':
+                rejected_count += 1
+            elif status.lower() == 'pending':
+                pending_count += 1
+
         data.append({
             'id_permohonan': permohonan.id_permohonan,
-            'nama_pelajar': permohonan.id_pelajar.nama_pelajar,  # Ensure the model has a 'nama_pelajar' field
-            'status': status,  # 'PENDING' if no status is found
+            'nama_pelajar': permohonan.id_pelajar.nama_pelajar,
+            'status': status,
             'tarikh_kemaskini_status': tarikh_kemaskini_status,
         })
 
     context = {
-        'permohonan_data': data
+        'permohonan_data': data,
+        'accepted_count': accepted_count,
+        'rejected_count': rejected_count,
+        'pending_count': pending_count,
+        'total_count': len(data),
+        'no_data': len(data) == 0,
     }
     return render(request, 'list.html', context)
 

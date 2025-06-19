@@ -8,16 +8,30 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
 
   <style>
-    body {
-      margin: 0;
-      padding: 0;
-      font-family: 'Poppins', sans-serif;
-      background: linear-gradient(to right, #f0f4ff, #e5ecff);
-      color: #333;
+    :root {
+      --primary: #002147;
+      --secondary: #0056b3;
+      --accent: #ffc107;
+      --bg: #f0f4f8;
+      --card-bg: #ffffff;
+      --text: #1a1a1a;
+      --subtext: #555;
     }
 
-    /* NAVIGATION */
-    nav {
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+    body {
+      background: linear-gradient(to right, #f0f4ff, #e5ecff);
+      color: #1e1e1e;
+      overflow-x: hidden;
+    }
+
+    /* --- Navbar Styling --- */
+   nav {
   background-color: #001c54;
   color: white;
   display: flex;
@@ -31,23 +45,17 @@
   z-index: 1000;
 }
 
-    .logo-section {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
+.logo-section {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
 
-    .logo-img {
-      height: 38px;
-    }
+.logo-img {
+  height: 38px;
+}
 
-    .logo-text {
-      font-size: 1.2rem;
-      font-weight: 600;
-      color: #FFD700;
-    }
-
-    .logo-text {
+.logo-text {
   display: flex;
   flex-direction: column;
   line-height: 1.1;
@@ -64,7 +72,6 @@
   color: #ddd;
   font-weight: 400;
 }
-
     .container {
       max-width: 1100px;
       margin: 40px auto;
@@ -241,6 +248,7 @@
           <option value="Rejected" {% if selected_status == "Rejected" %}selected{% endif %}>Rejected</option>
         </select>
       </form>
+      
     </div>
 
     <table>
